@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message Record {
+  PlayerBasicInfo player_info = 1;
+}
+
+message PlayerBasicInfo {
+  string pid = 1;
+  string name = 2;
+  int64 create_time = 3;
+  Gender gender = 4;
+}
+
+enum Gender {
+  MALE = 0;
+  FEMALE = 1;
+}
