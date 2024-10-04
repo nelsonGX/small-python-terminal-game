@@ -14,6 +14,7 @@ class Gender(betterproto.Enum):
 @dataclass
 class Record(betterproto.Message):
     player_info: "PlayerBasicInfo" = betterproto.message_field(1)
+    last_save_timestamp: int = betterproto.int64_field(2)
 
 
 @dataclass

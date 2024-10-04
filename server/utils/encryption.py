@@ -1,7 +1,6 @@
 import os
 import base64
 import hashlib
-import aiofiles
 
 from ..proto import game
 from cryptography.hazmat.backends import default_backend
@@ -30,14 +29,6 @@ async def md5_protobuf_message(message) -> str:
     md5_hash = hashlib.md5()
     md5_hash.update(serialized_data)
     return md5_hash.hexdigest()
-
-async def save(message: game.Record):
-    async with aiofiles.open("./saved/{}.bin".format(message.player_info.pid), "wb") as binary_file:
-        await encrypt(binary_file, message)
-
-async def load(name: str) -> game.Record:
-    async with aiofiles.open("./saved/{}.bin".format(name), "rb") as binary_file:
-        return game.Record().parse(await decrypt(binary_file))
 
 async def encrypt(binary, message: game.Record):
     key = os.urandom(32)

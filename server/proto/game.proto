@@ -2,6 +2,7 @@ syntax = "proto3";
 
 message Record {
   PlayerBasicInfo player_info = 1;
+  int64 last_save_timestamp = 2;
 }
 
 message PlayerBasicInfo {
