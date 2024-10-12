@@ -29,14 +29,14 @@ class Saving:
         return self.data
 
     async def save(self):
-        async with aiofiles.open("./saved/{}.bin".format(self.data.player_info.pid), "wb") as binary_file:
+        async with aiofiles.open("./saved/{}.yanx".format(self.data.player_info.pid), "wb") as binary_file:
             await encrypt(binary_file, self.data)
 
     async def load_from_file(self, name: str):
-        async with aiofiles.open("./saved/{}.bin".format(name), "rb") as binary_file:
+        async with aiofiles.open("./saved/{}.yanx".format(name), "rb") as binary_file:
             self.data = game.Record().parse(await decrypt(binary_file))
 
     @staticmethod
     async def load_file_static(name: str) -> game.Record:
-        async with aiofiles.open("./saved/{}.bin".format(name), "rb") as binary_file:
+        async with aiofiles.open("./saved/{}.yanx".format(name), "rb") as binary_file:
             return game.Record().parse(await decrypt(binary_file))
