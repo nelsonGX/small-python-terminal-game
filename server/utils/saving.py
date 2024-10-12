@@ -7,8 +7,7 @@ import aiofiles
 from .encryption import decrypt, encrypt
 from ..proto import game
 
-
-class Savings:
+class Saving:
     def __init__(self, data: game.Record = None):
         if data is None:
             self.data = game.Record(
