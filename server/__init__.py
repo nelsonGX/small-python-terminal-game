@@ -22,7 +22,7 @@ class Server:
         for file_path in directory_path.glob('*.yanx'):
             self.savings.append(Saving(await Saving.load_file_static(file_path.name.replace('.yanx', ''))))
         # Init data
-        DataLoader.initialize()
+        await DataLoader.initialize()
 
     async def create_saving(self, name: str):
         saving = Saving(name)
