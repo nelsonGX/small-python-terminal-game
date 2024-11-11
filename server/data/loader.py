@@ -14,4 +14,4 @@ class DataLoader:
 
     @classmethod
     def initialize(cls):
-        DataLoader.room_data = cls.load_data('../../data/RoomData.json', RoomData)
+        DataLoader.room_data = cls.load_data('./data/RoomData.json', RoomData)

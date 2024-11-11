@@ -1,7 +1,9 @@
 from pathlib import Path
-from proto.game import Record
-from game.room import RoomManager
-from game.player import PlayerManager
+
+from .data.loader import DataLoader
+from .proto.game import Record
+from .game.room import RoomManager
+from .game.player import PlayerManager
 
 from server.utils.saving import Saving
 
@@ -15,9 +17,12 @@ class Server:
         self.savings = []
 
     async def init(self):
+        # Init savings
         directory_path = Path('./saved/')
         for file_path in directory_path.glob('*.yanx'):
             self.savings.append(Saving(await Saving.load_file_static(file_path.name.replace('.yanx', ''))))
+        # Init data
+        DataLoader.initialize()
 
     async def create_saving(self, name: str):
         saving = Saving(name)

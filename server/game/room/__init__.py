@@ -3,7 +3,7 @@ from typing import List
 from ...data.data import RoomData
 from ...data.loader import DataLoader
 from ...proto.game import Record
-from instance import Room
+from .instance import Room
 
 class RoomManager:
     def __init__(self, saving: Record):
