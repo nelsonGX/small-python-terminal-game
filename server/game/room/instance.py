@@ -1,3 +1,3 @@
 class Room:
-    def __init__(self, id: int):
-        self.id = id
+    def __init__(self, room_id: int):
+        self.id = room_id

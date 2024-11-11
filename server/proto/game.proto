@@ -2,8 +2,8 @@ syntax = "proto3";
 
 message Record {
   PlayerBasicInfo player_info = 1;
-  repeated RoomData room_info_list = 2;
-  int64 last_save_timestamp = 10;
+  PlayerCurrentData player_cur_data = 2;
+  int64 last_save_timestamp = 3;
 }
 
 message PlayerBasicInfo {
@@ -11,7 +11,14 @@ message PlayerBasicInfo {
   string name = 2;
   int64 create_time = 3;
   HeroType type = 4;
-  uint32 level = 5;
+}
+
+message PlayerCurrentData {
+  uint32 level = 1;
+  uint32 hp = 2;
+  uint32 exp = 3;
+  uint32 weapon_id = 4;
+  repeated RoomData room_info_list = 5;
 }
 
 message RoomData {

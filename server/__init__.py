@@ -9,9 +9,9 @@ class Server:
     server = None
 
     def __init__(self):
-        self.room: RoomManager = None
-        self.player: PlayerManager = None
-        self.saving: Record = None
+        self.room: RoomManager | None = None
+        self.player: PlayerManager | None = None
+        self.saving: Record | None = None
         self.savings = []
 
     async def init(self):
@@ -21,9 +21,9 @@ class Server:
 
     async def create_saving(self, name: str):
         saving = Saving(name)
-        saving.save()
+        await saving.save()
         self.saving = saving
-        self.init()
+        await self.init()
 
     async def set_saving(self, saving: str | Record):
         if type(saving) == str:
