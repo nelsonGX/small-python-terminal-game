@@ -1,0 +1,52 @@
+[
+    {
+        "ID": 10001,
+        "LevelLimit": 1,
+        "Name": "Room 1"
+    },
+    {
+        "ID": 10002,
+        "LevelLimit": 1,
+        "Name": "Room 2"
+    },
+    {
+        "ID": 10003,
+        "LevelLimit": 1,
+        "Name": "Room 3"
+    },
+    {
+        "ID": 10004,
+        "LevelLimit": 2,
+        "Name": "Room 4"
+    },
+    {
+        "ID": 10005,
+        "LevelLimit": 2,
+        "Name": "Room 5"
+    },
+    {
+        "ID": 10006,
+        "LevelLimit": 2,
+        "Name": "Room 6"
+    },
+    {
+        "ID": 10007,
+        "LevelLimit": 3,
+        "Name": "Room 7"
+    },
+    {
+        "ID": 10008,
+        "LevelLimit": 3,
+        "Name": "Room 8"
+    },
+    {
+        "ID": 10009,
+        "LevelLimit": 3,
+        "Name": "Room 9"
+    },
+    {
+        "ID": 10010,
+        "LevelLimit": 3,
+        "Name": "Room 10"
+    }
+]

@@ -8,11 +8,11 @@ from .encryption import decrypt, encrypt
 from ..proto import game
 
 class Saving:
-    def __init__(self, data: game.Record = None):
-        if data is None:
+    def __init__(self, data: game.Record | str):
+        if type(data) == str:
             self.data = game.Record(
                 player_info=game.PlayerBasicInfo(
-                    name="",
+                    name=data,
                     pid=''.join(random.choices(string.ascii_lowercase + string.digits, k=32)),
                     create_time=int(datetime.now().timestamp()),
                     gender=game.Gender.MALE,

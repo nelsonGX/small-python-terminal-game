@@ -2,17 +2,25 @@ syntax = "proto3";
 
 message Record {
   PlayerBasicInfo player_info = 1;
-  int64 last_save_timestamp = 2;
+  repeated RoomData room_info_list = 2;
+  int64 last_save_timestamp = 10;
 }
 
 message PlayerBasicInfo {
   string pid = 1;
   string name = 2;
   int64 create_time = 3;
-  Gender gender = 4;
+  HeroType type = 4;
+  uint32 level = 5;
 }
 
-enum Gender {
-  MALE = 0;
-  FEMALE = 1;
+message RoomData {
+  uint32 id = 1;
+  bool finished = 2;
+}
+
+enum HeroType {
+  NONE = 0;
+  LI_BAI = 1;
+  QING_SHI_HUANG = 2;
 }
