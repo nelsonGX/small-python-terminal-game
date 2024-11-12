@@ -6,6 +6,7 @@ from ..proto import game
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
+# AES encryption
 async def aes_encrypt(plaintext: bytes, key: bytes) -> bytes:
     iv = base64.b64decode(b'SdIDFUlELIE9VylveIc64w==')
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
@@ -15,6 +16,7 @@ async def aes_encrypt(plaintext: bytes, key: bytes) -> bytes:
     ciphertext = encryptor.update(padded_plaintext) + encryptor.finalize()
     return ciphertext
 
+# AES decryption
 async def aes_decrypt(ciphertext: bytes, key: bytes) -> bytes:
     iv = base64.b64decode(b'SdIDFUlELIE9VylveIc64w==')
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
@@ -24,12 +26,14 @@ async def aes_decrypt(ciphertext: bytes, key: bytes) -> bytes:
     plaintext = padded_plaintext[:-pad_length]
     return plaintext
 
+# Calculate MD5 hash for a protobuf message
 async def md5_protobuf_message(message) -> str:
     serialized_data = message.SerializeToString()
     md5_hash = hashlib.md5()
     md5_hash.update(serialized_data)
     return md5_hash.hexdigest()
 
+# Encrypt data
 async def encrypt(binary, message: game.Record):
     key = os.urandom(32)
     md5 = await md5_protobuf_message(message)
@@ -40,6 +44,7 @@ async def encrypt(binary, message: game.Record):
     proto = await aes_encrypt(proto, md5.encode("utf-8"))  # Ensure md5 is bytes
     await binary.write(proto)
 
+# Decrypt data
 async def decrypt(binary) -> bytes:
     key = await binary.read(32)
     await binary.seek(32)

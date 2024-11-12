@@ -6,7 +6,6 @@ import aiofiles
 
 from .encryption import decrypt, encrypt
 from ..proto import game
-from ..proto.game import HeroType
 
 class Saving:
     def __init__(self, data: game.Record | str):
@@ -16,7 +15,6 @@ class Saving:
                     name=data,
                     pid=''.join(random.choices(string.ascii_lowercase + string.digits, k=32)),
                     create_time=int(datetime.now().timestamp()),
-                    type=HeroType.NONE,
                 ),
                 player_cur_data=game.PlayerCurrentData(
                     hero_id=0,
@@ -31,21 +29,26 @@ class Saving:
         else:
             self.data = data
 
+    # Set current data
     async def set(self, data: game.Record):
         self.data = data
 
+    # Get current data
     async def get(self):
         return self.data
 
+    # Save current data into file
     async def save(self):
         async with aiofiles.open("./saved/{}.yanx".format(self.data.player_info.pid), "wb") as binary_file:
             self.data.last_save_timestamp = int(datetime.now().timestamp())
             await encrypt(binary_file, self.data)
 
+    # Set current data from a file
     async def load_from_file(self, name: str):
         async with aiofiles.open("./saved/{}.yanx".format(name), "rb") as binary_file:
             self.data = game.Record().parse(await decrypt(binary_file))
 
+    # Load data from a file
     @staticmethod
     async def load_file_static(name: str) -> game.Record:
         async with aiofiles.open("./saved/{}.yanx".format(name), "rb") as binary_file:

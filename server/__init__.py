@@ -1,3 +1,5 @@
+# Call procedure: init -> create_saving / set_saving -> game_start
+
 from pathlib import Path
 
 from .data.loader import DataLoader
@@ -16,6 +18,7 @@ class Server:
         self.saving: Record | None = None
         self.savings = []
 
+    # Initialize server basic data
     async def init(self):
         # Init savings
         directory_path = Path('./saved/')
@@ -24,18 +27,21 @@ class Server:
         # Init data
         await DataLoader.initialize()
 
+    # Create a new saving, and assign to current session
     async def create_saving(self, name: str):
         saving = Saving(name)
         await saving.save()
         self.saving = saving
         await self.init()
 
+    # Set the saving for current session to the specified saved data
     async def set_saving(self, saving: str | Record):
         if type(saving) == str:
             self.saving = Saving(await Saving.load_file_static(saving + ".yanx"))
         else:
             self.saving = saving
 
+    # Create manager for current session and saving
     async def game_start(self):
         self.room = RoomManager(self.saving)
         self.player = PlayerManager(self.saving)
