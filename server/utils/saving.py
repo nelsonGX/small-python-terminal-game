@@ -19,8 +19,11 @@ class Saving:
                     type=HeroType.NONE,
                 ),
                 player_cur_data=game.PlayerCurrentData(
+                    hero_id=0,
                     level=1,
                     hp=1000,
+                    exp=0,
+                    weapon_id=0,
                     room_info_list=[],
                 ),
                 last_save_timestamp=int(datetime.now().timestamp()),

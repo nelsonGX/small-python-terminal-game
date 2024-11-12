@@ -10,24 +10,18 @@ message PlayerBasicInfo {
   string pid = 1;
   string name = 2;
   int64 create_time = 3;
-  HeroType type = 4;
 }
 
 message PlayerCurrentData {
-  uint32 level = 1;
-  uint32 hp = 2;
-  uint32 exp = 3;
-  uint32 weapon_id = 4;
-  repeated RoomData room_info_list = 5;
+  uint32 hero_id = 1;
+  uint32 level = 2;
+  uint32 hp = 3;
+  uint32 exp = 4;
+  uint32 weapon_id = 5;
+  repeated RoomData room_info_list = 6;
 }
 
 message RoomData {
   uint32 id = 1;
   bool finished = 2;
-}
-
-enum HeroType {
-  NONE = 0;
-  LI_BAI = 1;
-  QING_SHI_HUANG = 2;
 }

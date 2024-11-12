@@ -1,0 +1,14 @@
+[
+  {
+    "SkillID": 200101,
+    "WeaponID": 2001,
+    "Name": "測試武器技能1",
+    "Description": ""
+  },
+  {
+    "SkillID": 200201,
+    "WeaponID": 2002,
+    "Name": "測試武器技能2",
+    "Description": ""
+  }
+]

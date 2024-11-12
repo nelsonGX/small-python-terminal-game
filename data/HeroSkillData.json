@@ -1,0 +1,30 @@
+[
+  {
+    "ID": 100101,
+    "HeroID": 1001,
+    "Name": "李白 - 普通攻擊",
+    "Description": "",
+    "AtkMultiplier": 1
+  },
+  {
+    "ID": 100102,
+    "HeroID": 1001,
+    "Name": "她根本就沒有愛過你",
+    "Description": "",
+    "AtkMultiplier": 2.0
+  },
+  {
+    "ID": 100201,
+    "HeroID": 1002,
+    "Name": "秦始皇 - 普通攻擊",
+    "Description": "",
+    "AtkMultiplier": 1.25
+  },
+  {
+    "ID": 100202,
+    "HeroID": 1002,
+    "Name": "把你做成兵馬俑",
+    "Description": "",
+    "AtkMultiplier": 1.8
+  }
+]

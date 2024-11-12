@@ -1,0 +1,20 @@
+[
+  {
+    "ID": 1001,
+    "Name": "李白",
+    "BaseSkillID": 100101,
+    "SpecialSkillID": 100102,
+    "HeroTypeID": 101,
+    "UpgradeCurveID": 501,
+    "BaseDef": 20
+  },
+  {
+    "ID": 1002,
+    "Name": "秦始皇",
+    "BaseSkillID": 100201,
+    "SpecialSkillID": 100202,
+    "HeroTypeID": 102,
+    "UpgradeCurveID": 501,
+    "BaseDef": 25
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "ID": 2001,
+    "Name": "測試武器1",
+    "Description": "",
+    "UpgradeCurveID": 502,
+    "SkillID": 200101
+  },
+  {
+    "ID": 2002,
+    "Name": "測試武器1",
+    "Description": "",
+    "UpgradeCurveID": 502,
+    "SkillID": 200201
+  }
+]

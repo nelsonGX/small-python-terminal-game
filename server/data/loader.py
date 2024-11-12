@@ -2,10 +2,18 @@ from typing import List
 import json
 import aiofiles
 
-from server.data.data import RoomData
+from server.data.data import *
 
 class DataLoader:
+    hero_skill_data: List[HeroSkillData] = []
+    hero_type_data: List[HeroTypeData] = []
+    item_type_data: List[ItemTypeData] = []
+    reward_data: List[RewardData] = []
     room_data: List[RoomData] = []
+    shop_data: List[ShopData] = []
+    upgrade_curve_data: List[UpgradeCurveData] = []
+    weapon_data: List[WeaponData] = []
+    weapon_skill_data: List[WeaponSkillData] = []
 
     @staticmethod
     async def load_data(file_path: str, data_class):
@@ -16,4 +24,12 @@ class DataLoader:
 
     @classmethod
     async def initialize(cls):
+        DataLoader.hero_skill_data = await cls.load_data('./data/HeroSkillData.json', HeroSkillData)
+        DataLoader.hero_type_data = await cls.load_data('./data/HeroTypeData.json', HeroTypeData)
+        DataLoader.item_type_data = await cls.load_data('./data/ItemTypeData.json', ItemTypeData)
+        DataLoader.reward_data = await cls.load_data('./data/RewardData.json', RewardData)
         DataLoader.room_data = await cls.load_data('./data/RoomData.json', RoomData)
+        DataLoader.shop_data = await cls.load_data('./data/ShopData.json', ShopData)
+        DataLoader.upgrade_curve_data = await cls.load_data('./data/UpgradeCurveData.json', UpgradeCurveData)
+        DataLoader.weapon_data = await cls.load_data('./data/WeaponData.json', WeaponData)
+        DataLoader.weapon_skill_data = await cls.load_data('./data/WeaponSkillData.json', WeaponSkillData)
