@@ -7,17 +7,11 @@ from typing import List
 import betterproto
 
 
-class HeroType(betterproto.Enum):
-    NONE = 0
-    LI_BAI = 1
-    QING_SHI_HUANG = 2
-
-
 @dataclass
 class Record(betterproto.Message):
     player_info: "PlayerBasicInfo" = betterproto.message_field(1)
     player_cur_data: "PlayerCurrentData" = betterproto.message_field(2)
-    last_save_timestamp: int = betterproto.int64_field(10)
+    last_save_timestamp: int = betterproto.int64_field(3)
 
 
 @dataclass
@@ -25,14 +19,16 @@ class PlayerBasicInfo(betterproto.Message):
     pid: str = betterproto.string_field(1)
     name: str = betterproto.string_field(2)
     create_time: int = betterproto.int64_field(3)
-    type: "HeroType" = betterproto.enum_field(4)
 
 
 @dataclass
 class PlayerCurrentData(betterproto.Message):
-    level: int = betterproto.uint32_field(1)
-    hp: int = betterproto.uint32_field(2)
-    room_info_list: List["RoomData"] = betterproto.message_field(3)
+    hero_id: int = betterproto.uint32_field(1)
+    level: int = betterproto.uint32_field(2)
+    hp: int = betterproto.uint32_field(3)
+    exp: int = betterproto.uint32_field(4)
+    weapon_id: int = betterproto.uint32_field(5)
+    room_info_list: List["RoomData"] = betterproto.message_field(6)
 
 
 @dataclass
