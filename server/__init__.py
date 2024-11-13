@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from .data.loader import DataLoader
+from .game.shop import ShopManager
 from .proto.game import Record
 from .game.room import RoomManager
 from .game.player import PlayerManager
@@ -13,9 +14,12 @@ class Server:
     server = None
 
     def __init__(self):
+        # Managers
         self.room: RoomManager | None = None
         self.player: PlayerManager | None = None
-        self.saving: Record | None = None
+        self.shop: ShopManager | None = None
+        # Savings
+        self.saving: Saving | None = None
         self.savings = []
 
     # Initialize server basic data
@@ -35,7 +39,7 @@ class Server:
         await self.init()
 
     # Set the saving for current session to the specified saved data
-    async def set_saving(self, saving: str | Record):
+    async def set_saving(self, saving: str | Saving):
         if type(saving) == str:
             self.saving = Saving(await Saving.load_file_static(saving + ".yanx"))
         else:
@@ -43,5 +47,13 @@ class Server:
 
     # Create manager for current session and saving
     async def game_start(self):
-        self.room = RoomManager(self.saving)
-        self.player = PlayerManager(self.saving)
+        self.room = RoomManager(self)
+        self.player = PlayerManager(self)
+        self.shop = ShopManager(self)
+
+    async def game_end(self):
+        self.room = None
+        self.player = None
+        self.shop = None
+        await self.saving.save()
+        self.saving = None

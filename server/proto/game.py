@@ -7,6 +7,15 @@ from typing import List
 import betterproto
 
 
+class Retcode(betterproto.Enum):
+    SUCCESS = 0
+    ERROR = 1
+    # Shop
+    NOT_ENOUGH_CURRENCY = 2
+    ITEM_ALREADY_BOUGHT = 3
+    ITEM_NOT_FOUND = 4
+
+
 @dataclass
 class Record(betterproto.Message):
     player_info: "PlayerBasicInfo" = betterproto.message_field(1)
@@ -29,9 +38,16 @@ class PlayerCurrentData(betterproto.Message):
     exp: int = betterproto.uint32_field(4)
     weapon_id: int = betterproto.uint32_field(5)
     room_info_list: List["RoomData"] = betterproto.message_field(6)
+    shop_info: "ShopData" = betterproto.message_field(7)
 
 
 @dataclass
 class RoomData(betterproto.Message):
     id: int = betterproto.uint32_field(1)
     finished: bool = betterproto.bool_field(2)
+
+
+@dataclass
+class ShopData(betterproto.Message):
+    owned_currency: int = betterproto.uint32_field(1)
+    bought_items: List[int] = betterproto.uint32_field(2)

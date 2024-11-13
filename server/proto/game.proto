@@ -19,9 +19,24 @@ message PlayerCurrentData {
   uint32 exp = 4;
   uint32 weapon_id = 5;
   repeated RoomData room_info_list = 6;
+  ShopData shop_info = 7;
 }
 
 message RoomData {
   uint32 id = 1;
   bool finished = 2;
+}
+
+message ShopData {
+  uint32 owned_currency = 1;
+  repeated uint32 bought_items = 2;
+}
+
+enum Retcode {
+  SUCCESS = 0;
+  ERROR = 1;
+  // Shop
+  NOT_ENOUGH_CURRENCY = 2;
+  ITEM_ALREADY_BOUGHT = 3;
+  ITEM_NOT_FOUND = 4;
 }

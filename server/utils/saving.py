@@ -29,24 +29,11 @@ class Saving:
         else:
             self.data = data
 
-    # Set current data
-    async def set(self, data: game.Record):
-        self.data = data
-
-    # Get current data
-    async def get(self):
-        return self.data
-
     # Save current data into file
     async def save(self):
         async with aiofiles.open("./saved/{}.yanx".format(self.data.player_info.pid), "wb") as binary_file:
             self.data.last_save_timestamp = int(datetime.now().timestamp())
             await encrypt(binary_file, self.data)
-
-    # Set current data from a file
-    async def load_from_file(self, name: str):
-        async with aiofiles.open("./saved/{}.yanx".format(name), "rb") as binary_file:
-            self.data = game.Record().parse(await decrypt(binary_file))
 
     # Load data from a file
     @staticmethod
