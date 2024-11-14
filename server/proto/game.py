@@ -14,6 +14,8 @@ class Retcode(betterproto.Enum):
     NOT_ENOUGH_CURRENCY = 2
     ITEM_ALREADY_BOUGHT = 3
     ITEM_NOT_FOUND = 4
+    # Player
+    HERO_NOT_FOUND = 5
 
 
 @dataclass

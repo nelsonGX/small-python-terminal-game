@@ -35,11 +35,24 @@ class PlayerManager:
 
     # Calculate ATK and DEF
     async def calc_stats(self) -> Retcode:
-        hero_data = next(
+        # Get curve data
+        curve_data = next(
             (info for info in DataLoader.upgrade_curve_data if info.ID == self.get_hero_id()),
             None
         )
+        # Check if curve data exists
+        if curve_data is None:
+            return Retcode.HERO_NOT_FOUND
+        # Get hero data
+        hero_data = next(
+            (info for info in DataLoader.hero_data if info.ID == self.get_hero_id()),
+            None
+        )
+        # Check if hero data exists
         if hero_data is None:
             return Retcode.HERO_NOT_FOUND
-        self.ATK = DataLoader.hero_data.BaseAtk * (await self.get_level() ** hero_data.Atk)
-        self.DEF = DataLoader.hero_data.BaseDef * (await self.get_level() ** hero_data.Def)
+        # Calculate stats
+        self.ATK = hero_data.BaseAtk * (await self.get_level() ** curve_data.Atk)
+        self.DEF = hero_data.BaseDef * (await self.get_level() ** curve_data.Def)
+        # Return success
+        return Retcode.SUCCESS
