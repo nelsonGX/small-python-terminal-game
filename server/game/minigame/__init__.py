@@ -19,6 +19,14 @@ class MinigameManager:
                 unfinished_list.append(room)
         return unfinished_list
 
+    # Get minigames for current level
+    async def get_level_minigames(self) -> List[MinigameData]:
+        unfinished_list = []
+        for room in DataLoader.minigame_data:
+            if room.LevelLimit == self.session.player.get_level():
+                unfinished_list.append(room)
+        return unfinished_list
+
     # Check if a room is finished
     async def is_room_finished(self, minigame_id: int):
         minigame_data = next(

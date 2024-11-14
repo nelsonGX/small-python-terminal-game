@@ -6,6 +6,7 @@
     "SpecialSkillID": 100102,
     "HeroTypeID": 101,
     "UpgradeCurveID": 501,
+    "BaseAtk": 14,
     "BaseDef": 20
   },
   {
@@ -15,6 +16,7 @@
     "SpecialSkillID": 100202,
     "HeroTypeID": 102,
     "UpgradeCurveID": 501,
+    "BaseAtk": 11,
     "BaseDef": 25
   }
 ]

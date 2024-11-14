@@ -15,6 +15,7 @@ class HeroData:
     SkillID: int
     HeroTypeID: int
     UpgradeCurveID: int
+    BaseAtk: int
     BaseDef: int
 
 @dataclass

@@ -3,7 +3,7 @@ from server.data.data import BossData
 
 class Boss:
     def __init__(self, excel: BossData):
-        self.excel = excel
+        self.excel: BossData = excel
         self.HP = excel.HP
 
     async def set_hp(self, hp: int):
