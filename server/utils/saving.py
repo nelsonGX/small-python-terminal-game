@@ -23,6 +23,10 @@ class Saving:
                     exp=0,
                     weapon_id=0,
                     room_info_list=[],
+                    shop_info=game.ShopData(
+                        owned_currency=0,
+                        bought_items=[]
+                    )
                 ),
                 last_save_timestamp=int(datetime.now().timestamp()),
             )

@@ -1,6 +1,14 @@
 from dataclasses import dataclass
 
 @dataclass
+class BossData:
+    ID: int
+    Name: str
+    HP: int
+    ATK: int
+    DEF: int
+
+@dataclass
 class HeroData:
     ID: int
     Name: str
@@ -28,6 +36,12 @@ class ItemTypeData:
     Name: str
 
 @dataclass
+class MinigameData:
+    ID: int
+    LevelLimit: int
+    Name: str
+
+@dataclass
 class RewardData:
     ID: int
     Name: str
@@ -38,6 +52,7 @@ class RoomData:
     ID: int
     LevelLimit: int
     Name: str
+    BossID: int
 
 @dataclass
 class ShopData:

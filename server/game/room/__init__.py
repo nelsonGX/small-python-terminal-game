@@ -28,6 +28,5 @@ class RoomManager:
         return room_data.finished if room_data else False
 
     # Create a new room
-    @staticmethod
-    async def create_room(room_id: int) -> Room:
-        return Room(room_id)
+    async def create_room(self, room_id: int) -> Room:
+        return Room(room_id, self)

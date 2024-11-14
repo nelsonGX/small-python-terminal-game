@@ -1,0 +1,52 @@
+[
+    {
+        "ID": 20001,
+        "LevelLimit": 1,
+        "Name": "Minigame 1"
+    },
+    {
+        "ID": 20002,
+        "LevelLimit": 1,
+        "Name": "Minigame 2"
+    },
+    {
+        "ID": 20003,
+        "LevelLimit": 1,
+        "Name": "Minigame 3"
+    },
+    {
+        "ID": 20004,
+        "LevelLimit": 2,
+        "Name": "Minigame 4"
+    },
+    {
+        "ID": 20005,
+        "LevelLimit": 2,
+        "Name": "Minigame 5"
+    },
+    {
+        "ID": 20006,
+        "LevelLimit": 2,
+        "Name": "Minigame 6"
+    },
+    {
+        "ID": 20007,
+        "LevelLimit": 3,
+        "Name": "Minigame 7"
+    },
+    {
+        "ID": 20008,
+        "LevelLimit": 3,
+        "Name": "Minigame 8"
+    },
+    {
+        "ID": 20009,
+        "LevelLimit": 3,
+        "Name": "Minigame 9"
+    },
+    {
+        "ID": 20010,
+        "LevelLimit": 3,
+        "Name": "Minigame 10"
+    }
+]

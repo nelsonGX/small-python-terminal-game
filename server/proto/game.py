@@ -39,6 +39,7 @@ class PlayerCurrentData(betterproto.Message):
     weapon_id: int = betterproto.uint32_field(5)
     room_info_list: List["RoomData"] = betterproto.message_field(6)
     shop_info: "ShopData" = betterproto.message_field(7)
+    minigame_info_list: List["MinigameData"] = betterproto.message_field(8)
 
 
 @dataclass
@@ -51,3 +52,9 @@ class RoomData(betterproto.Message):
 class ShopData(betterproto.Message):
     owned_currency: int = betterproto.uint32_field(1)
     bought_items: List[int] = betterproto.uint32_field(2)
+
+
+@dataclass
+class MinigameData(betterproto.Message):
+    id: int = betterproto.uint32_field(1)
+    finished: bool = betterproto.bool_field(2)

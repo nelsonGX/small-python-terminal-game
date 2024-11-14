@@ -20,6 +20,7 @@ message PlayerCurrentData {
   uint32 weapon_id = 5;
   repeated RoomData room_info_list = 6;
   ShopData shop_info = 7;
+  repeated MinigameData minigame_info_list = 8;
 }
 
 message RoomData {
@@ -30,6 +31,11 @@ message RoomData {
 message ShopData {
   uint32 owned_currency = 1;
   repeated uint32 bought_items = 2;
+}
+
+message MinigameData {
+  uint32 id = 1;
+  bool finished = 2;
 }
 
 enum Retcode {

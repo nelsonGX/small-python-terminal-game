@@ -5,9 +5,11 @@ import aiofiles
 from server.data.data import *
 
 class DataLoader:
+    boss_data: List[BossData] = []
     hero_skill_data: List[HeroSkillData] = []
     hero_type_data: List[HeroTypeData] = []
     item_type_data: List[ItemTypeData] = []
+    minigame_data: List[MinigameData] = []
     reward_data: List[RewardData] = []
     room_data: List[RoomData] = []
     shop_data: List[ShopData] = []
@@ -24,9 +26,11 @@ class DataLoader:
 
     @classmethod
     async def initialize(cls):
+        DataLoader.boss_data = await cls.load_data('data/boss.json', BossData)
         DataLoader.hero_skill_data = await cls.load_data('./data/HeroSkillData.json', HeroSkillData)
         DataLoader.hero_type_data = await cls.load_data('./data/HeroTypeData.json', HeroTypeData)
         DataLoader.item_type_data = await cls.load_data('./data/ItemTypeData.json', ItemTypeData)
+        DataLoader.minigame_data = await cls.load_data('./data/MinigameData.json', MinigameData)
         DataLoader.reward_data = await cls.load_data('./data/RewardData.json', RewardData)
         DataLoader.room_data = await cls.load_data('./data/RoomData.json', RoomData)
         DataLoader.shop_data = await cls.load_data('./data/ShopData.json', ShopData)

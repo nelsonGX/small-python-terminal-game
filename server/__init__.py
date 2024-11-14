@@ -40,10 +40,7 @@ class Server:
 
     # Set the saving for current session to the specified saved data
     async def set_saving(self, saving: str | Saving):
-        if type(saving) == str:
-            self.saving = Saving(await Saving.load_file_static(saving + ".yanx"))
-        else:
-            self.saving = saving
+        self.saving = saving
 
     # Create manager for current session and saving
     async def game_start(self):
