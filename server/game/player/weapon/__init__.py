@@ -1,7 +1,5 @@
-from server.game.player import PlayerManager
-
 class Weapon:
-    def __init__(self, player: PlayerManager):
+    def __init__(self, player):
         self.player = player
 
     async def equip(self, weapon_id: int):

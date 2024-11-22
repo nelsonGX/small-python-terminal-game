@@ -1,13 +1,12 @@
 from typing import List
 
-from server import Server
 from server.data.data import ShopData
 from server.data.loader import DataLoader
 from server.proto.game import Retcode
 
 
 class ShopManager:
-    def __init__(self, server: Server):
+    def __init__(self, server):
         self.session = server
 
     # Get available shop data

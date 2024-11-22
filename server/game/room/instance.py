@@ -1,11 +1,10 @@
 from server.data.data import RoomData
 from server.data.loader import DataLoader
-from server.game.room import RoomManager
 from server.game.room.boss import Boss
 
 
 class Room:
-    def __init__(self, room_id: int, manager: RoomManager):
+    def __init__(self, room_id: int, manager):
         self.manager = manager
         self.excel: RoomData | None = next(
             (info for info in DataLoader.room_data if info.ID == room_id),

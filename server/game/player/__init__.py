@@ -1,11 +1,10 @@
 from server.game.player.weapon import Weapon
-from ... import Server
 from ...data.loader import DataLoader
 from ...proto.game import Retcode
 
 
 class PlayerManager:
-    def __init__(self, server: Server):
+    def __init__(self, server):
         self.session = server
         self.weapon = Weapon(self)
         self.ATK = 0

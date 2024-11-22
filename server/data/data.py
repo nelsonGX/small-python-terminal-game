@@ -12,7 +12,8 @@ class BossData:
 class HeroData:
     ID: int
     Name: str
-    SkillID: int
+    BaseSkillID: int
+    SpecialSkillID: int
     HeroTypeID: int
     UpgradeCurveID: int
     BaseAtk: int
@@ -77,7 +78,7 @@ class WeaponData:
 
 @dataclass
 class WeaponSkillData:
-    ID: int
+    SkillID: int
     WeaponID: int
     Name: str
     Description: str

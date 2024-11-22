@@ -1,14 +1,13 @@
 from typing import List
 
 from .boss import Boss
-from ... import Server
 from ...data.data import RoomData
 from ...data.loader import DataLoader
 from .instance import Room
 
 
 class RoomManager:
-    def __init__(self, server: Server):
+    def __init__(self, server):
         self.session = server
         self.instance: Boss | None = None
 
