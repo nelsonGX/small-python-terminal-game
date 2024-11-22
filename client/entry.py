@@ -32,10 +32,21 @@ class AsyncLobbyGUI:
         self.running = True
         self.loading_task: Optional[asyncio.Task] = None
         self.background_tasks: List[asyncio.Task] = []
+        self.last_drawn_option = -1  # Track last drawn selected option
+        self.cursor_position = 0  # Track cursor position
         
-    def clear_screen(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+    def move_cursor(self, line: int) -> str:
+        """Move cursor to specific line relative to current position"""
+        if line > 0:
+            return f"\033[{line}B"
+        elif line < 0:
+            return f"\033[{abs(line)}A"
+        return ""
         
+    def clear_line(self) -> str:
+        """Clear current line and return cursor to start"""
+        return "\r\033[K"
+    
     def draw_character_preview(self) -> str:
         return """
            /\\
@@ -49,24 +60,51 @@ class AsyncLobbyGUI:
           \\  /
            \\/"""
            
-    def draw_menu(self) -> None:
-        self.clear_screen()
+    def initial_draw(self) -> None:
+        """Initial full draw of the interface"""
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(self.title)
         print("\n" + self.draw_character_preview())
         print("\n╔══════════════ MENU ══════════════╗")
         
         for idx, option in enumerate(self.menu_options):
-            if idx == self.selected_option:
-                print(f"║ > {option:<28} ║")
-            else:
-                print(f"║   {option:<28} ║")
+            print(f"║   {option:<28} ║")
                 
         print("╚════════════════════════════════════╝")
         print("\nUse ↑↓ arrows to navigate and Enter to select")
+        
+        # Set initial cursor position
+        self.cursor_position = len(self.menu_options) + 4  # Account for title, preview, and borders
+        print(self.move_cursor(-self.cursor_position), end='', flush=True)
+
+    def update_selected_option(self) -> None:
+        """Update only the changed menu option lines"""
+        if self.last_drawn_option != self.selected_option:
+            # Clear previous selection
+            if self.last_drawn_option >= 0:
+                print(self.move_cursor(self.last_drawn_option), end='', flush=True)
+                print(self.clear_line() + 
+                      f"║   {self.menu_options[self.last_drawn_option]:<28} ║", 
+                      end='', flush=True)
+            
+            # Draw new selection
+            print(self.move_cursor(self.selected_option - self.last_drawn_option), end='', flush=True)
+            print(self.clear_line() + 
+                  f"║ > {self.menu_options[self.selected_option]:<28} ║", 
+                  end='', flush=True)
+            
+            # Return cursor to original position
+            total_move = -(self.selected_option - self.last_drawn_option)
+            if total_move != 0:
+                print(self.move_cursor(total_move), end='', flush=True)
+            
+            self.last_drawn_option = self.selected_option
 
     async def loading_animation(self) -> None:
         animations = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
         try:
+            # Move cursor to bottom of menu
+            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
             while self.state == GameState.LOADING:
                 for frame in animations:
                     if self.state != GameState.LOADING:
@@ -75,6 +113,9 @@ class AsyncLobbyGUI:
                     await asyncio.sleep(0.1)
         except asyncio.CancelledError:
             print("\rLoaded!    ")
+        finally:
+            # Return cursor to menu position
+            print(self.move_cursor(-(self.cursor_position + 2)), end='', flush=True)
 
     async def background_state_update(self) -> None:
         """Simulates background game state updates"""
@@ -87,6 +128,7 @@ class AsyncLobbyGUI:
 
     async def handle_input(self) -> None:
         if os.name == 'nt':  # Windows
+            import msvcrt
             while self.running:
                 if msvcrt.kbhit():
                     key = msvcrt.getch()
@@ -106,8 +148,10 @@ class AsyncLobbyGUI:
                             if next1 == '[':
                                 if next2 == 'A':  # Up arrow
                                     self.selected_option = (self.selected_option - 1) % len(self.menu_options)
+                                    self.update_selected_option()
                                 elif next2 == 'B':  # Down arrow
                                     self.selected_option = (self.selected_option + 1) % len(self.menu_options)
+                                    self.update_selected_option()
                         elif ch == '\r':  # Enter key
                             await self.handle_selection(self.menu_options[self.selected_option].split(". ")[1])
                     await asyncio.sleep(0.01)
@@ -119,8 +163,10 @@ class AsyncLobbyGUI:
             key = msvcrt.getch()
             if key == b'H':  # Up arrow
                 self.selected_option = (self.selected_option - 1) % len(self.menu_options)
+                self.update_selected_option()
             elif key == b'P':  # Down arrow
                 self.selected_option = (self.selected_option + 1) % len(self.menu_options)
+                self.update_selected_option()
         elif key == b'\r':  # Enter key
             await self.handle_selection(self.menu_options[self.selected_option].split(". ")[1])
 
@@ -141,29 +187,37 @@ class AsyncLobbyGUI:
         if selection == "Exit":
             self.running = False
             self.state = GameState.EXIT
+            # Move cursor to bottom before exit message
+            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
             print("\nThanks for playing!")
             return
 
         elif selection == "Start New Game":
             self.state = GameState.IN_GAME
+            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
             print("\nStarting new game...")
             
         elif selection == "Character Creation":
             self.state = GameState.CHARACTER_CREATION
+            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
             print("\nEntering character creation...")
             
         elif selection == "Settings":
             self.state = GameState.SETTINGS
+            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
             print("\nOpening settings...")
             
         await asyncio.sleep(1)
         self.state = GameState.MENU
+        # Return cursor to menu position
+        print(self.move_cursor(-(self.cursor_position + 2)), end='', flush=True)
 
     async def update_display(self) -> None:
         """Updates the display based on current state"""
+        self.initial_draw()  # Draw the initial interface
         while self.running:
             if self.state == GameState.MENU:
-                self.draw_menu()
+                self.update_selected_option()
             await asyncio.sleep(0.1)
 
     def handle_signal(self, signum, frame):
