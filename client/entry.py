@@ -1,6 +1,7 @@
 import os
 import asyncio
 import signal
+import sys
 from typing import List, Tuple, Optional
 from enum import Enum, auto
 
@@ -34,6 +35,7 @@ class AsyncLobbyGUI:
         self.background_tasks: List[asyncio.Task] = []
         self.last_drawn_option = -1  # Track last drawn selected option
         self.cursor_position = 0  # Track cursor position
+        self._terminal_settings = None
         
     def move_cursor(self, line: int) -> str:
         """Move cursor to specific line relative to current position"""
@@ -126,40 +128,59 @@ class AsyncLobbyGUI:
         except asyncio.CancelledError:
             pass
 
+    def setup_terminal(self):
+        """Set up terminal for raw input mode"""
+        if os.name != 'nt':
+            import termios
+            import tty
+            self._terminal_settings = termios.tcgetattr(sys.stdin.fileno())
+            tty.setraw(sys.stdin.fileno())
+
+    def restore_terminal(self):
+        """Restore terminal to original settings"""
+        if os.name != 'nt' and self._terminal_settings:
+            import termios
+            termios.tcsetattr(
+                sys.stdin.fileno(),
+                termios.TCSADRAIN,
+                self._terminal_settings
+            )
+
     async def handle_input(self) -> None:
-        if os.name == 'nt':  # Windows
-            import msvcrt
-            while self.running:
-                if msvcrt.kbhit():
-                    key = msvcrt.getch()
-                    await self.process_key_input(key)
-                await asyncio.sleep(0.01)
-        else:  # Unix-like
-            import sys, tty, termios
-            fd = sys.stdin.fileno()
-            old_settings = termios.tcgetattr(fd)
-            try:
-                tty.setraw(sys.stdin.fileno())
+        try:
+            if os.name == 'nt':  # Windows
+                import msvcrt
                 while self.running:
-                    if select.select([sys.stdin], [], [], 0)[0]:
-                        ch = sys.stdin.read(1)
-                        if ch == '\x1b':
-                            next1, next2 = sys.stdin.read(2)
-                            if next1 == '[':
-                                if next2 == 'A':  # Up arrow
-                                    self.selected_option = (self.selected_option - 1) % len(self.menu_options)
-                                    self.update_selected_option()
-                                elif next2 == 'B':  # Down arrow
-                                    self.selected_option = (self.selected_option + 1) % len(self.menu_options)
-                                    self.update_selected_option()
-                        elif ch == '\r':  # Enter key
-                            await self.handle_selection(self.menu_options[self.selected_option].split(". ")[1])
+                    if msvcrt.kbhit():
+                        key = msvcrt.getch()
+                        await self.process_key_input(key)
                     await asyncio.sleep(0.01)
-            finally:
-                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            else:  # Unix-like
+                import sys
+                reader = asyncio.StreamReader()
+                protocol = asyncio.StreamReaderProtocol(reader)
+                await asyncio.get_event_loop().connect_read_pipe(
+                    lambda: protocol, sys.stdin)
+
+                while self.running:
+                    ch = await reader.read(1)
+                    if ch == b'\x1b':
+                        seq = await reader.read(2)
+                        if seq == b'[A':  # Up arrow
+                            self.selected_option = (self.selected_option - 1) % len(self.menu_options)
+                            self.update_selected_option()
+                        elif seq == b'[B':  # Down arrow
+                            self.selected_option = (self.selected_option + 1) % len(self.menu_options)
+                            self.update_selected_option()
+                    elif ch == b'\r':  # Enter key
+                        await self.handle_selection(self.menu_options[self.selected_option].split(". ")[1])
+        except Exception as e:
+            self.restore_terminal()
+            raise e
 
     async def process_key_input(self, key: bytes) -> None:
         if key == b'\xe0':  # Special key prefix
+            import msvcrt
             key = msvcrt.getch()
             if key == b'H':  # Up arrow
                 self.selected_option = (self.selected_option - 1) % len(self.menu_options)
@@ -223,26 +244,31 @@ class AsyncLobbyGUI:
     def handle_signal(self, signum, frame):
         """Handle system signals for clean shutdown"""
         self.running = False
+        self.restore_terminal()
         for task in self.background_tasks:
             task.cancel()
 
     async def run(self) -> None:
-        # Set up signal handlers for clean shutdown
-        signal.signal(signal.SIGINT, self.handle_signal)
-        signal.signal(signal.SIGTERM, self.handle_signal)
-
-        # Create and store background tasks
-        self.background_tasks = [
-            asyncio.create_task(self.background_state_update()),
-            asyncio.create_task(self.update_display()),
-            asyncio.create_task(self.handle_input())
-        ]
+        # Set up terminal
+        self.setup_terminal()
 
         try:
+            # Set up signal handlers for clean shutdown
+            signal.signal(signal.SIGINT, self.handle_signal)
+            signal.signal(signal.SIGTERM, self.handle_signal)
+
+            # Create and store background tasks
+            self.background_tasks = [
+                asyncio.create_task(self.background_state_update()),
+                asyncio.create_task(self.update_display()),
+                asyncio.create_task(self.handle_input())
+            ]
+
             # Wait for all tasks to complete
             await asyncio.gather(*self.background_tasks, return_exceptions=True)
         finally:
             # Cleanup
+            self.restore_terminal()
             for task in self.background_tasks:
                 if not task.done():
                     task.cancel()
@@ -252,11 +278,6 @@ class AsyncLobbyGUI:
                         pass
 
 async def entry():
-    if os.name == 'nt':
-        import msvcrt
-    else:
-        import select
-    
     # Create and run the lobby
     lobby = AsyncLobbyGUI()
     await lobby.run()
