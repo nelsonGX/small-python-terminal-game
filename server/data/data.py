@@ -9,6 +9,15 @@ class BossData:
     DEF: int
 
 @dataclass
+class BuffData:
+    ID: int
+    Name: str
+    Type: int
+    BuffType: str
+    Value: int
+    Probability: int
+
+@dataclass
 class HeroData:
     ID: int
     Name: str

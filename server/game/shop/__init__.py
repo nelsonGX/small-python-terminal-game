@@ -38,3 +38,9 @@ class ShopManager:
             await self.session.saving.save()
             # Return success
             return Retcode.SUCCESS
+        
+    async def get_owned_currencies(self) -> int:
+        return self.session.saving.data.player_cur_data.shop_info.owned_currency
+    
+    async def set_owned_currencies(self, currency: int):
+        self.session.saving.data.player_cur_data.shop_info.owned_currency = currency

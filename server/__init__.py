@@ -4,9 +4,9 @@ from pathlib import Path
 
 from .data.loader import DataLoader
 from .game.shop import ShopManager
-from .proto.game import Record
 from .game.room import RoomManager
 from .game.player import PlayerManager
+from .game.buff import BuffManager
 
 from server.utils.saving import Saving
 
@@ -18,6 +18,7 @@ class Server:
         self.room: RoomManager | None = None
         self.player: PlayerManager | None = None
         self.shop: ShopManager | None = None
+        self.buff: BuffManager | None = None
         # Savings
         self.saving: Saving | None = None
         self.savings = []

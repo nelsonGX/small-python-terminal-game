@@ -7,6 +7,7 @@ from server.data.data import *
 
 class DataLoader:
     boss_data: List[BossData] = []
+    buff_data: List[BuffData] = []
     hero_data: List[HeroData] = []
     hero_skill_data: List[HeroSkillData] = []
     hero_type_data: List[HeroTypeData] = []
@@ -28,7 +29,8 @@ class DataLoader:
 
     @classmethod
     async def initialize(cls):
-        DataLoader.boss_data = await cls.load_data('data/BossData.json', BossData)
+        DataLoader.boss_data = await cls.load_data('./data/BossData.json', BossData)
+        DataLoader.buff_data = await cls.load_data('./data/BuffData.json', BuffData)
         DataLoader.hero_data = await cls.load_data('./data/HeroData.json', HeroData)
         DataLoader.hero_skill_data = await cls.load_data('./data/HeroSkillData.json', HeroSkillData)
         DataLoader.hero_type_data = await cls.load_data('./data/HeroTypeData.json', HeroTypeData)
