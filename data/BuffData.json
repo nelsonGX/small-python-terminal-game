@@ -1,0 +1,50 @@
+[
+    {
+        "ID": 1001,
+        "Name": "",
+        "Type": 0,
+        "BuffType": "ATK",
+        "Value": 2,
+        "Probability": 0.2
+    },
+    {
+        "ID": 1002,
+        "Name": "",
+        "Type": 0,
+        "BuffType": "DEF",
+        "Value": 2,
+        "Probability": 0.2
+    },
+    {
+        "ID": 1003,
+        "Name": "",
+        "Type": 0,
+        "BuffType": "HP",
+        "Value": 2,
+        "Probability": 0.12
+    },
+    {
+        "ID": 1004,
+        "Name": "",
+        "Type": 1,
+        "BuffType": "HP",
+        "Value": 0.5,
+        "Probability": 0.18
+    },
+    {
+        "ID": 1005,
+        "Name": "",
+        "Type": 1,
+        "BuffType": "COIN",
+        "Value": 0.5,
+        "Probability": 0.18
+    },
+    {
+        "ID": 1006,
+        "Name": "",
+        "Type": 1,
+        "BuffType": "BOSS_HP",
+        "Value": 2,
+        "Probability": 0.12
+    }
+]
