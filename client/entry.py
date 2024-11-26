@@ -15,10 +15,9 @@ class GameState(Enum):
 
 class AsyncLobbyGUI:
     def __init__(self):
-        self.title = """
-        ╔══════════════════════════════════════════╗
-        ║             EPIC RPG ADVENTURE           ║
-        ╚══════════════════════════════════════════╝"""
+        self.title = """╔══════════════════════════════════════════╗
+║             EPIC RPG ADVENTURE           ║
+╚══════════════════════════════════════════╝"""
         
         self.menu_options = [
             "1. Start New Game",
@@ -33,108 +32,24 @@ class AsyncLobbyGUI:
         self.running = True
         self.loading_task: Optional[asyncio.Task] = None
         self.background_tasks: List[asyncio.Task] = []
-        self.last_drawn_option = -1  # Track last drawn selected option
-        self.cursor_position = 0  # Track cursor position
+        self.last_drawn_option = -1
+        self.cursor_position = 0
         self._terminal_settings = None
-        
-    def move_cursor(self, line: int) -> str:
-        """Move cursor to specific line relative to current position"""
-        if line > 0:
-            return f"\033[{line}B"
-        elif line < 0:
-            return f"\033[{abs(line)}A"
-        return ""
-        
-    def clear_line(self) -> str:
-        """Clear current line and return cursor to start"""
-        return "\r\033[K"
-    
-    def draw_character_preview(self) -> str:
-        return """
-           /\\
-          /  \\
-         /    \\
-        /      \\
-       |   ○  ○ |
-       |    ◡   |
-        \\  --  /
-         \\    /
-          \\  /
-           \\/"""
-           
-    def initial_draw(self) -> None:
-        """Initial full draw of the interface"""
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print(self.title)
-        print("\n" + self.draw_character_preview())
-        print("\n╔══════════════ MENU ══════════════╗")
-        
-        for idx, option in enumerate(self.menu_options):
-            print(f"║   {option:<28} ║")
-                
-        print("╚════════════════════════════════════╝")
-        print("\nUse ↑↓ arrows to navigate and Enter to select")
-        
-        # Set initial cursor position
-        self.cursor_position = len(self.menu_options) + 4  # Account for title, preview, and borders
-        print(self.move_cursor(-self.cursor_position), end='', flush=True)
-
-    def update_selected_option(self) -> None:
-        """Update only the changed menu option lines"""
-        if self.last_drawn_option != self.selected_option:
-            # Clear previous selection
-            if self.last_drawn_option >= 0:
-                print(self.move_cursor(self.last_drawn_option), end='', flush=True)
-                print(self.clear_line() + 
-                      f"║   {self.menu_options[self.last_drawn_option]:<28} ║", 
-                      end='', flush=True)
-            
-            # Draw new selection
-            print(self.move_cursor(self.selected_option - self.last_drawn_option), end='', flush=True)
-            print(self.clear_line() + 
-                  f"║ > {self.menu_options[self.selected_option]:<28} ║", 
-                  end='', flush=True)
-            
-            # Return cursor to original position
-            total_move = -(self.selected_option - self.last_drawn_option)
-            if total_move != 0:
-                print(self.move_cursor(total_move), end='', flush=True)
-            
-            self.last_drawn_option = self.selected_option
-
-    async def loading_animation(self) -> None:
-        animations = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
-        try:
-            # Move cursor to bottom of menu
-            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
-            while self.state == GameState.LOADING:
-                for frame in animations:
-                    if self.state != GameState.LOADING:
-                        break
-                    print(f"\rLoading {frame}", end="", flush=True)
-                    await asyncio.sleep(0.1)
-        except asyncio.CancelledError:
-            print("\rLoaded!    ")
-        finally:
-            # Return cursor to menu position
-            print(self.move_cursor(-(self.cursor_position + 2)), end='', flush=True)
-
-    async def background_state_update(self) -> None:
-        """Simulates background game state updates"""
-        try:
-            while self.running:
-                await asyncio.sleep(1)
-                # Add background tasks here (e.g., autosave, network sync, etc.)
-        except asyncio.CancelledError:
-            pass
 
     def setup_terminal(self):
         """Set up terminal for raw input mode"""
-        if os.name != 'nt':
+        if os.name == 'nt':  # Windows
+            import msvcrt
+            # Enable ANSI escape sequences on Windows
+            from ctypes import windll
+            kernel32 = windll.kernel32
+            kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+        else:  # Unix-like
             import termios
             import tty
             self._terminal_settings = termios.tcgetattr(sys.stdin.fileno())
             tty.setraw(sys.stdin.fileno())
+            sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', buffering=1)
 
     def restore_terminal(self):
         """Restore terminal to original settings"""
@@ -145,6 +60,97 @@ class AsyncLobbyGUI:
                 termios.TCSADRAIN,
                 self._terminal_settings
             )
+
+    async def initial_draw(self):
+        """Initial full draw of the interface"""
+        # Clear screen and move to top-left
+        print("\033[2J\033[H", end='', flush=True)
+        
+        # Print title
+        print(self.title, end='\n', flush=True)
+        
+        # Print character preview
+        preview = [
+            "           /\\",
+            "          /  \\",
+            "         /    \\",
+            "        /      \\",
+            "       |   ○  ○ |",
+            "       |    ◡   |",
+            "        \\  --  /",
+            "         \\    /",
+            "          \\  /",
+            "           \\/"
+        ]
+        for line in preview:
+            print(line, flush=True)
+        
+        # Print menu frame
+        print("\n╔══════════════ MENU ══════════════╗", flush=True)
+        
+        # Print menu options
+        for idx, option in enumerate(self.menu_options):
+            if idx == self.selected_option:
+                print(f"║ > {option:<28} ║", flush=True)
+            else:
+                print(f"║   {option:<28} ║", flush=True)
+        
+        print("╚════════════════════════════════════╝", flush=True)
+        print("\nUse ↑↓ arrows to navigate and Enter to select", flush=True)
+        
+        # Calculate and store cursor position for later use
+        self.cursor_position = len(self.menu_options) + 4
+        sys.stdout.flush()
+        
+        # Move cursor back up to the first menu option
+        print(f"\033[{self.cursor_position}A", end='', flush=True)
+        sys.stdout.flush()
+
+    def update_selected_option(self):
+        """Update only the changed menu option lines"""
+        if self.last_drawn_option != self.selected_option:
+            # Move to and clear previous selection
+            if self.last_drawn_option >= 0:
+                print(f"\033[{self.last_drawn_option}B", end='', flush=True)
+                print(f"║   {self.menu_options[self.last_drawn_option]:<28} ║", end='', flush=True)
+            
+            # Move to and update new selection
+            moves = self.selected_option - (self.last_drawn_option if self.last_drawn_option >= 0 else 0)
+            if moves != 0:
+                print(f"\033[{abs(moves)}{'B' if moves > 0 else 'A'}", end='', flush=True)
+            print(f"║ > {self.menu_options[self.selected_option]:<28} ║", end='', flush=True)
+            
+            # Return cursor to menu start
+            print(f"\033[{self.selected_option}A", end='', flush=True)
+            
+            self.last_drawn_option = self.selected_option
+            sys.stdout.flush()
+
+    async def loading_animation(self) -> None:
+        animations = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+        try:
+            # Move cursor to bottom of menu
+            print(f"\033[{self.cursor_position + 2}B", end='', flush=True)
+            while self.state == GameState.LOADING:
+                for frame in animations:
+                    if self.state != GameState.LOADING:
+                        break
+                    print(f"\rLoading {frame}", end="", flush=True)
+                    await asyncio.sleep(0.1)
+        except asyncio.CancelledError:
+            print("\rLoaded!    ")
+        finally:
+            # Return cursor to menu position
+            print(f"\033[{self.cursor_position + 2}A", end='', flush=True)
+
+    async def background_state_update(self) -> None:
+        """Simulates background game state updates"""
+        try:
+            while self.running:
+                await asyncio.sleep(1)
+                # Add background tasks here (e.g., autosave, network sync, etc.)
+        except asyncio.CancelledError:
+            pass
 
     async def handle_input(self) -> None:
         try:
@@ -208,64 +214,51 @@ class AsyncLobbyGUI:
         if selection == "Exit":
             self.running = False
             self.state = GameState.EXIT
-            # Move cursor to bottom before exit message
-            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
+            print(f"\033[{self.cursor_position + 2}B", end='', flush=True)
             print("\nThanks for playing!")
             return
 
         elif selection == "Start New Game":
             self.state = GameState.IN_GAME
-            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
+            print(f"\033[{self.cursor_position + 2}B", end='', flush=True)
             print("\nStarting new game...")
             
         elif selection == "Character Creation":
             self.state = GameState.CHARACTER_CREATION
-            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
+            print(f"\033[{self.cursor_position + 2}B", end='', flush=True)
             print("\nEntering character creation...")
             
         elif selection == "Settings":
             self.state = GameState.SETTINGS
-            print(self.move_cursor(self.cursor_position + 2), end='', flush=True)
+            print(f"\033[{self.cursor_position + 2}B", end='', flush=True)
             print("\nOpening settings...")
             
         await asyncio.sleep(1)
         self.state = GameState.MENU
-        # Return cursor to menu position
-        print(self.move_cursor(-(self.cursor_position + 2)), end='', flush=True)
+        print(f"\033[{self.cursor_position + 2}A", end='', flush=True)
 
-    async def update_display(self) -> None:
-        """Updates the display based on current state"""
-        self.initial_draw()  # Draw the initial interface
-        while self.running:
-            if self.state == GameState.MENU:
-                self.update_selected_option()
-            await asyncio.sleep(0.1)
-
-    def handle_signal(self, signum, frame):
-        """Handle system signals for clean shutdown"""
-        self.running = False
-        self.restore_terminal()
-        for task in self.background_tasks:
-            task.cancel()
-
-    async def run(self) -> None:
+    async def run(self):
+        """Main run loop"""
         # Set up terminal
         self.setup_terminal()
 
         try:
-            # Set up signal handlers for clean shutdown
-            signal.signal(signal.SIGINT, self.handle_signal)
-            signal.signal(signal.SIGTERM, self.handle_signal)
+            # Set up signal handlers
+            signal.signal(signal.SIGINT, lambda s, f: self.handle_signal(s, f))
+            signal.signal(signal.SIGTERM, lambda s, f: self.handle_signal(s, f))
 
-            # Create and store background tasks
+            # Initial draw
+            await self.initial_draw()
+
+            # Create background tasks
             self.background_tasks = [
                 asyncio.create_task(self.background_state_update()),
-                asyncio.create_task(self.update_display()),
                 asyncio.create_task(self.handle_input())
             ]
 
-            # Wait for all tasks to complete
+            # Wait for tasks to complete
             await asyncio.gather(*self.background_tasks, return_exceptions=True)
+
         finally:
             # Cleanup
             self.restore_terminal()
@@ -277,7 +270,26 @@ class AsyncLobbyGUI:
                     except asyncio.CancelledError:
                         pass
 
+    def handle_signal(self, signum, frame):
+        """Handle system signals for clean shutdown"""
+        self.running = False
+        self.restore_terminal()
+        for task in self.background_tasks:
+            task.cancel()
+
 async def entry():
+    # Ensure proper terminal initialization
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+    
     # Create and run the lobby
     lobby = AsyncLobbyGUI()
-    await lobby.run()
+    try:
+        await lobby.run()
+    finally:
+        lobby.restore_terminal()
+        # Move cursor to bottom of screen
+        print("\033[?25h", end='', flush=True)  # Show cursor
+        print("\n" * 2, end='', flush=True)  # Add some padding at the bottom
