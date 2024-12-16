@@ -4,8 +4,9 @@
     "border_elements" : ["+", "|", "="],
     "elements": [
         {
-            "key": "W",
-            "action": ""
+            "key": "#",
+            "action": "game",
+            "content": "game06"
         }
     ]
 }

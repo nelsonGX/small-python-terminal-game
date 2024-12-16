@@ -22,6 +22,7 @@ class Server:
         # Savings
         self.saving: Saving | None = None
         self.savings = []
+        Server.server = self
 
     # Initialize server basic data
     async def init(self):

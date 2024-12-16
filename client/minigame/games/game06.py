@@ -1,7 +1,6 @@
-from ...server.data.loader import DataLoader, BuffData
-from ...server import Server
+from server.data.loader import DataLoader, BuffData
+from server import Server
 import random
-
 
 class Game06:
     def __init__(self, session: Server):
@@ -41,4 +40,10 @@ class Game06:
         for buff in DataLoader.buff_data:
             prob_list.append(buff.Probability)
         return random.choices(DataLoader.buff_data, weights=prob_list, k=1)[0]
+    
+if __name__ == "__main__":
+    from ....server import Server
+    from ....server.data.loader import DataLoader, BuffData
+    game = Game06(Server.server)
+    game.start()
     

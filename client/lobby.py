@@ -4,6 +4,8 @@ import sys
 import platform
 from client.assets.reader import get_gui, get_player, get_gui_properties
 from client.renderer import AsyncMapRenderer
+import client.minigame.gameloader as gameloader
+import client.animations as animations
 
 # Different input handling for different operating systems
 if platform.system() == 'Windows':
@@ -45,10 +47,12 @@ async def render_frame(renderer, player_x, player_y):
 async def main_game_loop():
     game_map = await get_gui("lobby")
     game_properties = await get_gui_properties("lobby")
+    game_elements = game_properties["elements"]
+    
     # Initialize the renderer
     renderer = AsyncMapRenderer(game_map, viewport_width=50, viewport_height=30)
     
-    # Player starting position (where @ is)
+    # Player starting position
     player_x = 3
     player_y = 2
     
@@ -74,25 +78,41 @@ async def main_game_loop():
         elif key == 'q':
             break
             
-        # Check if new position is at least one space away from map boundaries
+        # Check if new position is within bounds
         if (1 <= new_x < renderer.map_width - 1 and 
             1 <= new_y < renderer.map_height - 1):
             
-            # Get the viewport for the new position
-            viewport = await renderer.get_viewport(new_x, new_y)
-            current_lines = viewport.split('\n')
-            center_y = len(current_lines) // 2
-            center_x = len(current_lines[0]) // 2
-            
-            # Update player position if the space is empty
-            if current_lines[center_y][center_x] not in game_properties["border_elements"]:
-                # Update old position
-                await renderer.update_map(player_x, player_y, ' ')
+            try:
+                # Get character at the new position directly from map_lines
+                new_pos_char = renderer.map_lines[new_y][new_x]
                 
-                # Update player position
-                player_x, player_y = new_x, new_y
-                await renderer.update_map(player_x, player_y, '@')
-        
+                # Check for special elements before moving
+                element_found = False
+                for element in game_elements:
+                    if new_pos_char == element["key"]:
+                        await animations.transition()
+                        element_found = True
+                        if element["action"] == "game":
+                            await gameloader.play(element["content"])
+                        break
+                
+                # Only update position if not hitting a border or special element
+                if (not element_found and 
+                    new_pos_char not in game_properties["border_elements"]):
+                    # Update old position
+                    await renderer.update_map(player_x, player_y, ' ')
+                    
+                    # Update player position
+                    player_x, player_y = new_x, new_y
+                    await renderer.update_map(player_x, player_y, "O")
+                else:
+                    print(f"Movement blocked by: {new_pos_char}")
+            except IndexError as e:
+                print(f"Position access error: {e}")
+                print(f"Map size: {len(renderer.map_lines)} rows")
+                if len(renderer.map_lines) > new_y:
+                    print(f"Row length at {new_y}: {len(renderer.map_lines[new_y])}")
+            
         # Small delay to prevent too rapid updates
         await asyncio.sleep(0.01)
 
