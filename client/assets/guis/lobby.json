@@ -1,0 +1,11 @@
+{
+    "name": "lobby",
+    "type": "gui",
+    "border_elements" : ["+", "|", "="],
+    "elements": [
+        {
+            "key": "W",
+            "action": ""
+        }
+    ]
+}

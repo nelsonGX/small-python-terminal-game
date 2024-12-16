@@ -1,6 +1,7 @@
 import os
-from client.loading import loading
+from client.animations import loading
 from client.assets.reader import get_gui
+from client.lobby import main_game_loop
 
 menu_options = [
     {"name": "1. Start New Game", "action": "start_new_game"},
@@ -21,9 +22,11 @@ async def action(index, title):
     action = menu_options[index]["action"]
     if action == "start_new_game":
         await loading("Starting new game")
+        await main_game_loop()
 
     elif action == "load_game":
         await loading("Loading game")
+        await main_game_loop()
 
     elif action == "exit":
         print(title)
