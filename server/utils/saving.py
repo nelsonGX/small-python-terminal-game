@@ -1,6 +1,6 @@
 import string
 from datetime import datetime
-from random import random
+import random
 
 import aiofiles
 

@@ -1,4 +1,6 @@
 import os
+
+from server import Server
 from client.animations import loading
 from client.assets.reader import get_gui
 from client.lobby import main_game_loop
@@ -20,8 +22,14 @@ async def action(index, title):
     index = int(index)
     index -= 1
     action = menu_options[index]["action"]
+
+    # Make new server object
+    Server.server = Server()
+    await Server.server.init()
+
     if action == "start_new_game":
         await loading("Starting new game")
+        await Server.server.create_saving("test") # Create new saving
         await main_game_loop()
 
     elif action == "load_game":

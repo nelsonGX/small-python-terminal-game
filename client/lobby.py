@@ -2,6 +2,8 @@ import asyncio
 import os
 import sys
 import platform
+
+import server
 from client.assets.reader import get_gui, get_player, get_gui_properties
 from client.renderer import AsyncMapRenderer
 import client.minigame.gameloader as gameloader
@@ -48,6 +50,8 @@ async def main_game_loop():
     game_map = await get_gui("lobby")
     game_properties = await get_gui_properties("lobby")
     game_elements = game_properties["elements"]
+
+    await server.Server.server.game_start()
     
     # Initialize the renderer
     renderer = AsyncMapRenderer(game_map, viewport_width=50, viewport_height=30)

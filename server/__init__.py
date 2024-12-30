@@ -22,7 +22,6 @@ class Server:
         # Savings
         self.saving: Saving | None = None
         self.savings = []
-        Server.server = self
 
     # Initialize server basic data
     async def init(self):
@@ -49,6 +48,7 @@ class Server:
         self.room = RoomManager(self)
         self.player = PlayerManager(self)
         self.shop = ShopManager(self)
+        self.buff = BuffManager(self)
 
     async def game_end(self):
         self.room = None

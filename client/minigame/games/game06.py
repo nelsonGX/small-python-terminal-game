@@ -1,6 +1,16 @@
+from click import pause
+
 from server.data.loader import DataLoader, BuffData
 from server import Server
 import random
+
+
+async def random_buff() -> BuffData:
+    prob_list = []
+    for buff in DataLoader.buff_data:
+        prob_list.append(buff.Probability)
+    return random.choices(DataLoader.buff_data, weights=prob_list, k=1)[0]
+
 
 class Game06:
     def __init__(self, session: Server):
@@ -21,29 +31,19 @@ class Game06:
                     # Check for currencies
                     if currency < 100:
                         print("目前金幣不足，請在獲取 100 金幣後再次嘗試")
+                        pause()
                         return
                     # Do calculations
-                    self.session.shop.set_owned_currencies(currency - 100)
-                    buff: BuffData = await self.random_buff()
+                    await self.session.shop.set_owned_currencies(currency - 100)
+                    buff: BuffData = await random_buff()
                     print(f"獲取到的效果為：{buff.Name}！")
-                    self.session.buff.add_buff(buff.ID)
+                    await self.session.buff.add_buff(buff.ID)
+                    pause()
                 elif user_input == 2:
-                    # TODO: add break point for going back to main process here
                     break
                 else:
                     print("無效選項，請選擇 1 或 2。")
+                    pause()
             except ValueError:
                 print("輸入值錯誤！請輸入數字。")
-
-    async def random_buff(self) -> BuffData:
-        prob_list = []
-        for buff in DataLoader.buff_data:
-            prob_list.append(buff.Probability)
-        return random.choices(DataLoader.buff_data, weights=prob_list, k=1)[0]
-    
-if __name__ == "__main__":
-    from ....server import Server
-    from ....server.data.loader import DataLoader, BuffData
-    game = Game06(Server.server)
-    game.start()
     
