@@ -1,7 +1,7 @@
 [
     {
         "ID": 1001,
-        "Name": "",
+        "Name": "攻擊力加成",
         "Type": 0,
         "BuffType": "ATK",
         "Value": 2,
@@ -9,7 +9,7 @@
     },
     {
         "ID": 1002,
-        "Name": "",
+        "Name": "防禦力加成",
         "Type": 0,
         "BuffType": "DEF",
         "Value": 2,
@@ -17,7 +17,7 @@
     },
     {
         "ID": 1003,
-        "Name": "",
+        "Name": "血量加成",
         "Type": 0,
         "BuffType": "HP",
         "Value": 2,
@@ -25,7 +25,7 @@
     },
     {
         "ID": 1004,
-        "Name": "",
+        "Name": "血量減少",
         "Type": 1,
         "BuffType": "HP",
         "Value": 0.5,
@@ -33,7 +33,7 @@
     },
     {
         "ID": 1005,
-        "Name": "",
+        "Name": "金幣減半",
         "Type": 1,
         "BuffType": "COIN",
         "Value": 0.5,
@@ -41,7 +41,7 @@
     },
     {
         "ID": 1006,
-        "Name": "",
+        "Name": "敵人血量雙倍",
         "Type": 1,
         "BuffType": "BOSS_HP",
         "Value": 2,

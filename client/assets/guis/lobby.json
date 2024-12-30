@@ -5,7 +5,12 @@
     "elements": [
         {
             "key": "#",
-            "action": "game",
+            "action": "game01",
+            "content": "game01"
+        },
+        {
+            "key": "@",
+            "action": "game06",
             "content": "game06"
         }
     ]

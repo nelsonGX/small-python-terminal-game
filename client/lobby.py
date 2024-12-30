@@ -96,8 +96,10 @@ async def main_game_loop():
                     if new_pos_char == element["key"]:
                         await animations.transition()
                         element_found = True
-                        if element["action"] == "game":
-                            await gameloader.play(element["content"])
+                        if element["action"] == "game01":
+                            await gameloader.play01(element["content"])
+                        if element["action"] == "game06":
+                            await gameloader.play06(element["content"])
                         break
                 
                 # Only update position if not hitting a border or special element
