@@ -2,8 +2,8 @@ import os
 import time
 import shutil
 
-# from client.assets.reader import get_gui
-from ..assets.reader import get_gui
+from client.assets.reader import get_gui
+# from ..assets.reader import get_gui
 
 # ASCII art texts
 text1 = get_gui("boss").strip().split('\n')
