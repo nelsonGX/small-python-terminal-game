@@ -8,7 +8,14 @@ from client.assets.reader import get_gui, get_player, get_gui_properties
 from client.renderer import AsyncMapRenderer
 import client.minigame.gameloader as gameloader
 import client.animations as animations
-
+class get_server_data:
+    async def get_gold():
+        return await server.Server().shop.get_owned_currencies()
+    async def get_hp():
+        return await server.Server().player.get_hp()
+    async def get_hero_id():
+        return await server.Server().player.get_hero_id()
+    
 # Different input handling for different operating systems
 if platform.system() == 'Windows':
     import msvcrt
@@ -37,6 +44,7 @@ else:
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
+
 
 async def render_frame(renderer, player_x, player_y):
     """Asynchronously render a single frame of the game"""
