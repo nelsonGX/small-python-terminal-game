@@ -15,6 +15,8 @@ class get_server_data:
         return await server.Server().player.get_hp()
     async def get_hero_id():
         return await server.Server().player.get_hero_id()
+    async def get_level():
+        return await server.Server().player.get_level()
     
 # Different input handling for different operating systems
 if platform.system() == 'Windows':
@@ -46,11 +48,15 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-async def render_frame(renderer, player_x, player_y):
+async def render_frame(renderer, player_x, player_y, hero_id, gold, hp, level):
     """Asynchronously render a single frame of the game"""
     clear_screen()
+
+    print(f"Hero ID: {hero_id} | Gold: {gold} | HP: {hp} | Level: {level}")
+
     viewport = await renderer.get_viewport(player_x, player_y)
     print(viewport)
+
     print("\nUse WASD to move, Q to quit")
 
 async def main_game_loop():
@@ -59,6 +65,15 @@ async def main_game_loop():
     game_elements = game_properties["elements"]
 
     await server.Server.server.game_start()
+
+    # hero_id = await get_server_data.get_hero_id()
+    # gold = await get_server_data.get_gold()
+    # hp = await get_server_data.get_hp()
+    # level = await get_server_data.get_level()
+    hero_id = 1
+    gold = 100
+    hp = 100
+    level = 1
     
     # Initialize the renderer
     renderer = AsyncMapRenderer(game_map, viewport_width=50, viewport_height=30)
@@ -69,7 +84,7 @@ async def main_game_loop():
     
     while True:
         # Render current frame
-        await render_frame(renderer, player_x, player_y)
+        await render_frame(renderer, player_x, player_y, hero_id, gold, hp, level)
         
         # Get player input asynchronously
         key = await get_key()
