@@ -26,6 +26,11 @@ class Server:
     # Initialize server basic data
     async def init(self):
         # Init savings
+
+        # If the directory does not exist, create it
+        if not Path('./saved/').exists():
+            Path('./saved/').mkdir()
+            
         directory_path = Path('./saved/')
         for file_path in directory_path.glob('*.yanx'):
             self.savings.append(Saving(await Saving.load_file_static(file_path.name.replace('.yanx', ''))))
