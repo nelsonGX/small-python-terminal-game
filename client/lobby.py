@@ -44,7 +44,6 @@ async def render_frame(renderer, player_x, player_y):
     viewport = await renderer.get_viewport(player_x, player_y)
     print(viewport)
     print("\nUse WASD to move, Q to quit")
-    print(f"Player position: ({player_x}, {player_y})")
 
 async def main_game_loop():
     game_map = await get_gui("lobby")
