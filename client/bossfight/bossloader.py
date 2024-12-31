@@ -1,27 +1,30 @@
 import os
 import time
-import shutil
+import asyncio
 
 from client.assets.reader import get_gui
-# from ..assets.reader import get_gui
 
 # ASCII art texts
-text1 = get_gui("boss").strip().split('\n')
+async def get_text():
+    text1 = await get_gui("boss")
+    text2 = await get_gui("fight")
 
-text2 = get_gui("fight").strip().split('\n')
+    text1 = text1.strip().split('\n')
+    text2 = text2.strip().split('\n')
+    return text1, text2
 
-def clear_screen():
+async def clear_screen():
     """Clear the terminal screen."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def get_text_width(text_lines):
+async def get_text_width(text_lines):
     """Get the maximum width of the text."""
     return max(len(line) for line in text_lines)
 
-def create_frame(text1_lines, text2_lines, text1_pos, text2_pos):
+async def create_frame(text1_lines, text2_lines, text1_pos, text2_pos):
     """Create a single frame of the animation."""
-    text1_width = get_text_width(text1_lines)
-    text2_width = get_text_width(text2_lines)
+    text1_width = await get_text_width(text1_lines)
+    text2_width = await get_text_width(text2_lines)
     frame = []
     
     # Add text1
@@ -43,9 +46,11 @@ def create_frame(text1_lines, text2_lines, text1_pos, text2_pos):
     
     return frame
 
-def main():
-    text1_width = get_text_width(text1)
-    text2_width = get_text_width(text2)
+async def main():
+    text1, text2 = await get_text()
+
+    # Get the width of the text
+    text2_width = await get_text_width(text2)
     
     # Starting positions
     text1_pos = 20  # Start from right edge
@@ -60,7 +65,7 @@ def main():
     
     # Main animation loop
     while text1_pos > text1_target or text2_pos < text2_target:
-        clear_screen()
+        await clear_screen()
         
         # Update positions
         if text1_pos > text1_target:
@@ -73,15 +78,15 @@ def main():
         text2_pos = min(text2_pos, text2_target)
         
         # Create and display frame
-        frame = create_frame(text1, text2, text1_pos, text2_pos)
+        frame = await create_frame(text1, text2, text1_pos, text2_pos)
         print('\n'.join(frame))
         
-        time.sleep(speed)
+        asyncio.sleep(speed)
     
     # Ensure final frame is displayed
-    clear_screen()
-    final_frame = create_frame(text1, text2, text1_target, text2_target)
+    await clear_screen()
+    final_frame = await create_frame(text1, text2, text1_target, text2_target)
     print('\n'.join(final_frame))
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
