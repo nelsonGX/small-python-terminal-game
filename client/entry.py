@@ -8,7 +8,8 @@ from client.lobby import main_game_loop
 menu_options = [
     {"name": "1. Start New Game", "action": "start_new_game"},
     {"name": "2. Load Game", "action": "load_game"},
-    {"name": "3. Exit", "action": "exit"}
+    {"name": "3. Exit", "action": "exit"},
+    {"name": "4. Test", "action": "test"}
 ]
 
 
@@ -35,6 +36,10 @@ async def action(index, title):
     elif action == "load_game":
         await loading("Loading game")
         await main_game_loop()
+
+    elif action == "test":
+        from client.bossfight.bossloader import main as bossfight
+        await bossfight()
 
     elif action == "exit":
         print(title)
