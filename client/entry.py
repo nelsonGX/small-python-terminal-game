@@ -12,7 +12,6 @@ menu_options = [
     {"name": "4. Test", "action": "test"}
 ]
 
-
 async def check_action(index):
     if not index.isdigit():
         return False

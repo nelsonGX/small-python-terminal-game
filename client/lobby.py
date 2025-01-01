@@ -8,6 +8,8 @@ from client.assets.reader import get_gui, get_player, get_gui_properties
 from client.renderer import AsyncMapRenderer
 import client.minigame.gameloader as gameloader
 import client.animations as animations
+from client.shop.shop import shop
+
 class get_server_data:
     def __init__(self, session: Server):
         self.session: Server = session
@@ -135,6 +137,8 @@ async def main_game_loop():
                             await gameloader.play01(element["content"])
                         if element["action"] == "game06":
                             await gameloader.play06(element["content"])
+                        if element["action"] == "shop":
+                            await shop()
                         break
                 
                 # Only update position if not hitting a border or special element
