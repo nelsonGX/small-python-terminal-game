@@ -1,0 +1,2 @@
+async def fight():
+    pass
