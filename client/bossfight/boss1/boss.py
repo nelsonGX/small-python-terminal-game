@@ -34,14 +34,14 @@ class get_server_data:
 async def get_all_player_data():
     get_data = get_server_data(Server.server)
 
-    # hero_id = await get_data.get_hero_id()
-    # gold = await get_data.get_gold()
-    # hp = await get_data.get_hp()
-    # level = await get_data.get_level()
-    hero_id = 1
-    gold = 100
-    hp = 100
-    level = 1
+    hero_id = await get_data.get_hero_id()
+    gold = await get_data.get_gold()
+    hp = await get_data.get_hp()
+    level = await get_data.get_level()
+    # hero_id = 1
+    # gold = 100
+    # hp = 100
+    # level = 1
 
     return hero_id, gold, hp, level
 
