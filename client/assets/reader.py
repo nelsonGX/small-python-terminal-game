@@ -2,7 +2,7 @@ import aiofiles
 import json
 
 async def read_file(file):
-    async with aiofiles.open(file, mode='r') as f:
+    async with aiofiles.open(file, mode='r', encoding="utf-8") as f:
         return await f.read()
     
 async def get_gui(gui):

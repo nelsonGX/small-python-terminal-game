@@ -98,6 +98,82 @@ async def transition():
 
     await main()
 
+
+async def load_boss(speed=0.05):
+    # ASCII art texts
+    async def get_text():
+        text1 = await get_gui("boss")
+        text2 = await get_gui("fight")
+
+        text1 = text1.strip().split('\n')
+        text2 = text2.strip().split('\n')
+        return text1, text2
+
+    async def get_text_width(text_lines):
+        """Get the maximum width of the text."""
+        return max(len(line) for line in text_lines)
+
+    async def create_frame(text1_lines, text2_lines, text1_pos, text2_pos):
+        """Create a single frame of the animation."""
+        text1_width = await get_text_width(text1_lines)
+        text2_width = await get_text_width(text2_lines)
+        frame = []
+        
+        # Add text1
+        for line in text1_lines:
+            # Pad the line with spaces to match the maximum width
+            padded_line = line.ljust(text1_width)
+            # Add spaces before the text based on position
+            frame_line = " " * text1_pos + padded_line
+            frame.append(frame_line)
+        
+        # Add spacing between texts
+        frame.append("")  # Empty line for separation
+        
+        # Add text2
+        for line in text2_lines:
+            padded_line = line.ljust(text2_width)
+            frame_line = " " * text2_pos + padded_line
+            frame.append(frame_line)
+        
+        return frame
+    text1, text2 = await get_text()
+    
+    # Starting positions
+    text1_pos = 20
+    text2_pos = 0
+    
+    # Target positions
+    text1_target = 0  # Left align
+    text2_target = 15  # 5 spaces indent
+
+    # Main animation loop
+    while text1_pos > text1_target:
+        await clear_screen()
+        text1_pos -= 2
+        text1_pos = max(text1_pos, text1_target)
+        
+        # Create and display frame
+        frame = await create_frame(text1, text2, text1_pos, text2_pos)
+        print('\n'.join(frame))
+        await asyncio.sleep(speed)
+    
+    # Second phase: Animate text2
+    while text2_pos < text2_target:
+        await clear_screen()
+        text2_pos += 2
+        text2_pos = min(text2_pos, text2_target)
+        
+        # Create and display frame
+        frame = await create_frame(text1, text2, text1_pos, text2_pos)
+        print('\n'.join(frame))
+        await asyncio.sleep(speed)
+    
+    # Ensure final frame is displayed
+    await clear_screen()
+    final_frame = await create_frame(text1, text2, text1_target, text2_target)
+    print('\n'.join(final_frame))
+
 # testing
 if __name__ == "__main__":
     asyncio.run(transition())
