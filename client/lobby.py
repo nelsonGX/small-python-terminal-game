@@ -133,12 +133,21 @@ async def main_game_loop():
                     if new_pos_char == element["key"]:
                         await animations.transition()
                         element_found = True
-                        if element["action"] == "game01":
-                            await gameloader.play01(element["content"])
-                        if element["action"] == "game06":
-                            await gameloader.play06(element["content"])
-                        if element["action"] == "shop":
-                            await shop()
+                        game_actions = {
+                            "game01": gameloader.play01,
+                            "game02": gameloader.play02,
+                            "game03": gameloader.play03,
+                            "game04": gameloader.play04,
+                            # "game05": gameloader.play05,
+                            "game06": gameloader.play06,
+                            "game07": gameloader.play07,
+                            "game08": gameloader.play08,
+                            "game09": gameloader.play09,
+                            "game10": gameloader.play10,
+                            "game11": gameloader.play11,
+                            "shop": shop
+                        }
+                        await game_actions[element["action"]](element["content"])
                         break
                 
                 # Only update position if not hitting a border or special element

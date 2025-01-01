@@ -3,20 +3,65 @@
     "type": "gui",
     "border_elements" : ["+", "|", "="],
     "elements": [
-        {
-            "key": "#",
-            "action": "game01",
-            "content": "game01"
-        },
-        {
-            "key": "@",
-            "action": "game06",
-            "content": "game06"
-        },
-        {
-            "key": "$",
-            "action": "shop",
-            "content": "shop"
-        }
-    ]
+    {
+        "key": "A",
+        "action": "game01",
+        "content": "game01"
+    },
+    {
+        "key": "B",
+        "action": "game02",
+        "content": "game02"
+    },
+    {
+        "key": "C",
+        "action": "game03",
+        "content": "game03"
+    },
+    {
+        "key": "D",
+        "action": "game04",
+        "content": "game04"
+    },
+    {
+        "key": "E",
+        "action": "game05",
+        "content": "game05"
+    },
+    {
+        "key": "F",
+        "action": "game06",
+        "content": "game06"
+    },
+    {
+        "key": "G",
+        "action": "game07",
+        "content": "game07"
+    },
+    {
+        "key": "H",
+        "action": "game08",
+        "content": "game08"
+    },
+    {
+        "key": "I",
+        "action": "game09",
+        "content": "game09"
+    },
+    {
+        "key": "J",
+        "action": "game10",
+        "content": "game10"
+    },
+    {
+        "key": "K",
+        "action": "game11",
+        "content": "game11"
+    },
+    {
+        "key": "$",
+        "action": "shop",
+        "content": "shop"
+    }
+] 
 }

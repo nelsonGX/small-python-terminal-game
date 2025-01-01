@@ -1,33 +1,40 @@
-+=========================================================================================+
-|                                                                                         |
-|                $$$$$$$$$$$$$                                                            |
-|           w    $           $                    w                                       |
-|                $   SHOP    $                                                            |
-|      W         $           $                   w                                        |
-|                $$$$$$$$$$$$$                                                            |
-|                                                                                         |
-|                                                                                         |
-|               #############                                                              |
-|               #           #               w                w                             |
-|               #  抽取效果  #                                                              |
-|               #           #                                                              |
-|         w     #############                                                              |
-|             w                                                                           |
-|                                         w                                               |
-|                                                      @@@@@@@@@@@@                       |
-|                              w                w      @          @                       |
-|                                                      @   賭場   @                       |
-|                                                      @          @                       |
-|                                                      @@@@@@@@@@@@                       |
-|                                                                                         |
-|                                                                                     w   |
-|              w                                                                          |
-|                                                                                         |
-|                                                                                         |
-|                           w                                                             |
-|                                                                                         |
-|                                   w                                                     |
-|                                                                                         |
-|                                                                                         |
-|                                                                                         |
-+=========================================================================================+
++==========================================================================================================+
+|                                                                                                          |
+|                $$$$$$$$$$$$$                                    JJJJJJJJJJJ                              |
+|           w    $           $                    w               J         J                              |
+|                $   SHOP    $                                    J Game 10 J                              |
+|      W         $           $                   w                J         J                              |
+|                $$$$$$$$$$$$$                                    JJJJJJJJJJJ                              |
+|                                                                                                          |
+|                                                                       FFFFFFFFFFFF                       |
+|               AAAAAAAAAAAAA                                           F          F                       |
+|               A           A               w                w          F  Game6   F                       |
+|               A   Game1   A                                           F          F                       |
+|               A           A                                           FFFFFFFFFFFF                       |
+|         w     AAAAAAAAAAAAA                                                                              |
+|                                                                                                          |
+|                                                                                                          |
+|                                                      BBBBBBBBBBBB                                        |
+|                              w                       B          B                                        |
+|                                                      B   Game2  B                                        |
+|                                                      B          B                                        |
+|               EEEEEEEEEEEEEE                         BBBBBBBBBBBB               IIIIIIIIIII              |
+|               E            E                                                    I  Game9  I              |
+|               E    Game5   E                                                    IIIIIIIIIII              |
+|               E (BROKEN!)  E                                                                             |
+|               EEEEEEEEEEEEEE                                                                             |
+|                                                     DDDDDDDDDDD            HHHHHHHHHHH                   |
+|                          CCCCCCCCCCCCCCCC           D         D            H  Game8  H                   |
+|                          C              C           D  Game4  D            HHHHHHHHHHH                   |
+|                          C   Game 3     C           D         D                                          |
+|                          C              C           DDDDDDDDDDD                                          |
+|                          CCCCCCCCCCCCCCCC                                                                |
+|                                                                                                          |
+|                                                                                                          |
+|       KKKKKKKKKKKKK                                                  GGGGGGGGGG                          |
+|       K           K                                                  G        G                          |
+|       K  Game 11  K                                                  G  Game7 G                          |
+|       K           K                                                  G        G                          |
+|       KKKKKKKKKKKKK                                                  GGGGGGGGGG                          |
+|                                                                                                          |
++==========================================================================================================+
