@@ -1,7 +1,7 @@
 from client.animations import load_boss
 from client.bossfight.boss1.boss import fight as fight_1
 from client.bossfight.boss2.boss import fight as fight_2
-from client.bossfight.boss3.boss import fight as fight_3
+from client.bossfight.boss2.boss import fight as fight_3
 
 async def fight_boss(target_boss):
     await load_boss(speed=0.05)

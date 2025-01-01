@@ -19,7 +19,7 @@ class get_server_data:
         return await self.session.player.get_level()
     
     async def get_boss_data(self):
-        # boss_id = await self.session.boss.get_boss_id()
+        # boss_id = await self.session.room..get_boss_id()
         # boss_name = await self.session.boss.get_boss_name()
         # boss_hp = await self.session.boss.get_boss_hp()
         # boss_atk = await self.session.boss.get_boss_atk()
@@ -56,13 +56,21 @@ async def fight():
     boss_id, boss_name, boss_hp, boss_atk, boss_def = await get_server_data.get_boss_data(Server.server)
     hero_id, gold, hp, level = await get_all_player_data()
 
-    # show the boss
     boss = await get_gui("boss1")
+    boss_fight = await get_gui("boss1_2")
+    boss_dead = await get_gui("boss1_3")
+    player_dead = await get_gui("dead")
+
+    # show the boss
     print(boss)
     print(boss_name)
     print(f"HP: {boss_hp}")
     print(f"ATK: {boss_atk}")
     print(f"DEF: {boss_def}")
+    print()
+    print("Player")
+    print(f"HP: {hp}")
+    print(f"Level: {level}")
     print()
     print("你必須跟他擲骰子比大小！")
 
@@ -76,45 +84,66 @@ async def fight():
         print(boss)
         print()
         print(f"{boss_name} rolled {boss_roll}!")
-
+        print()
         input("Press Enter to roll the dice...")
         player_roll = dice.roll()
-        print(f"You rolled {player_roll}!")
 
+        await clear_screen()
         if player_roll > boss_roll:
+            boss_hp -= 15
+
+            print(boss)
+            await asyncio.sleep(0.5)
+            await clear_screen()
+            print(boss_dead)
+            print(boss_name)
+            print(f"HP: {boss_hp}")
+            print(f"ATK: {boss_atk}")
+            print(f"DEF: {boss_def}")
+            print()
+            print("Player")
+            print(f"HP: {hp}")
+            print(f"Level: {level}")
+            print()
             print("Player wins!")
+
         elif player_roll < boss_roll:
+            hp -= boss_atk
+
+            print(boss)
+            await asyncio.sleep(0.5)
+            await clear_screen()
+            print(boss_fight)
+            print(boss_name)
+            print(f"HP: {boss_hp}")
+            print(f"ATK: {boss_atk}")
+            print(f"DEF: {boss_def}")
+            print()
+            print("Player")
+            print(f"HP: {hp}")
+            print(f"Level: {level}")
+            print()
             print(f"{boss_name} wins!")
-
-        # calculate the damage
-        player_damage = player_roll + level
-        boss_damage = boss_roll + boss_atk
-
-        # check if player is dead
-        if player_damage > boss_def:
-            boss_hp -= player_damage - boss_def
-            print(f"Player dealt {player_damage - boss_def} damage to {boss_name}!")
-        else:
-            print(f"Player dealt 0 damage to {boss_name}!")
-
-        # check if boss is dead
-        if boss_damage > level:
-            hp -= boss_damage - level
-            print(f"{boss_name} dealt {boss_damage - level} damage to Player!")
-        else:
-            print(f"{boss_name} dealt 0 damage to Player!")
+        elif player_roll == boss_roll:
+            print("It's a draw!")
+            continue
 
         # check if player is dead
         if hp <= 0:
-            print("Player is dead!")
-            break
+            print(player_dead)
+            print()
+            print("You are dead!")
+            input("Press Enter to exit...")
+            return False
 
         # check if boss is dead
         if boss_hp <= 0:
             print(f"{boss_name} is dead!")
-            break
+            input("Press Enter to exit...")
+            return True
 
         # pause
+        print()
         input("Press Enter to continue...")
 
 # testing
