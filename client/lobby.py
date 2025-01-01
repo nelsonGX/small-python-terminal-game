@@ -60,7 +60,6 @@ else:
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
 async def render_frame(renderer, player_x, player_y, hero_id, gold, hp, level):
     """Asynchronously render a single frame of the game"""
     clear_screen()

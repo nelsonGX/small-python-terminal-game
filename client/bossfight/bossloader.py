@@ -11,3 +11,7 @@ async def fight_boss(target_boss):
         await fight_2()
     elif target_boss == 3:
         await fight_3()
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(fight_boss(1))
