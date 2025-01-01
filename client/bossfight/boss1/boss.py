@@ -32,6 +32,8 @@ class get_server_data:
         return boss_id, boss_name, boss_hp, boss_atk, boss_def
 
 async def get_all_player_data():
+    await Server.server.create_saving("test")
+    await Server.server.game_start()
     get_data = get_server_data(Server.server)
 
     hero_id = await get_data.get_hero_id()
