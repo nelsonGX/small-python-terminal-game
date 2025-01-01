@@ -3,20 +3,33 @@ import os
 import sys
 import platform
 
-import server
+from server import Server
 from client.assets.reader import get_gui, get_player, get_gui_properties
 from client.renderer import AsyncMapRenderer
 import client.minigame.gameloader as gameloader
 import client.animations as animations
 class get_server_data:
-    async def get_gold():
-        return await server.Server().shop.get_owned_currencies()
-    async def get_hp():
-        return await server.Server().player.get_hp()
-    async def get_hero_id():
-        return await server.Server().player.get_hero_id()
-    async def get_level():
-        return await server.Server().player.get_level()
+    def __init__(self, session: Server):
+        self.session: Server = session
+
+    async def get_gold(self):
+        return await self.session.shop.get_owned_currencies()
+    async def get_hp(self):
+        return await self.session.player.get_hp()
+    async def get_hero_id(self):
+        return await self.session.player.get_hero_id()
+    async def get_level(self):
+        return await self.session.player.get_level()
+    
+async def get_all_data():
+    get_data = get_server_data(Server.server)
+
+    hero_id = await get_data.get_hero_id()
+    gold = await get_data.get_gold()
+    hp = await get_data.get_hp()
+    level = await get_data.get_level()
+
+    return hero_id, gold, hp, level
     
 # Different input handling for different operating systems
 if platform.system() == 'Windows':
@@ -64,17 +77,8 @@ async def main_game_loop():
     game_properties = await get_gui_properties("lobby")
     game_elements = game_properties["elements"]
 
-    await server.Server.server.game_start()
+    await Server.server.game_start()
 
-    # hero_id = await get_server_data.get_hero_id()
-    # gold = await get_server_data.get_gold()
-    # hp = await get_server_data.get_hp()
-    # level = await get_server_data.get_level()
-    hero_id = 1
-    gold = 100
-    hp = 100
-    level = 1
-    
     # Initialize the renderer
     renderer = AsyncMapRenderer(game_map, viewport_width=50, viewport_height=30)
     
@@ -83,6 +87,9 @@ async def main_game_loop():
     player_y = 2
     
     while True:
+        # get datas
+        hero_id, gold, hp, level = await get_all_data()
+
         # Render current frame
         await render_frame(renderer, player_x, player_y, hero_id, gold, hp, level)
         
@@ -101,7 +108,14 @@ async def main_game_loop():
             new_x -= 1
         elif key == 'd':
             new_x += 1
-        elif key == 'q':
+
+        # quit
+        elif key == '\x03' or key == 'q':
+            clear_screen()
+            title = await get_gui("title")
+            print(title)
+            print()
+            print("Goodbye!")
             break
             
         # Check if new position is within bounds
