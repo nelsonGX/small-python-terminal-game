@@ -19,7 +19,7 @@ class get_server_data:
         return await self.session.player.get_level()
     
     async def get_boss_data(self):
-        # boss_id = await self.session.room..get_boss_id()
+        # boss_id = await self.session.room
         # boss_name = await self.session.boss.get_boss_name()
         # boss_hp = await self.session.boss.get_boss_hp()
         # boss_atk = await self.session.boss.get_boss_atk()

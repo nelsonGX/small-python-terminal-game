@@ -38,8 +38,8 @@ async def action(index, title):
         await main_game_loop()
 
     elif action == "test":
-        from client.bossfight.bossloader import main as bossfight
-        await bossfight()
+        from client.bossfight.bossloader import fight_boss
+        await fight_boss(1)
 
     elif action == "exit":
         print(title)
