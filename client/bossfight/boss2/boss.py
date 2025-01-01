@@ -1,5 +1,7 @@
 import random
 
+from client.assets.reader import get_gui
+
 async def guess_riddle(question, answer, reason=""):
     print("\n猜謎遊戲！")
     print(question)

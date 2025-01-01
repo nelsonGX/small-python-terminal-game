@@ -7,7 +7,7 @@ from client.minigame.games.game06 import Game06
 from client.minigame.games.game07 import Game07
 from client.minigame.games.game08 import Game08
 from client.minigame.games.game09 import Game09
-# from client.minigame.games.game10 import Game10
+from client.minigame.games.game10 import Game10
 from server import Server
 import os
 
@@ -52,4 +52,9 @@ async def play08(game_name):
 async def play09(game_name):
     await clear_screen()
     game = Game09(Server.server)
+    await game.start()
+
+async def play10(game_name):
+    await clear_screen()
+    game = Game10(Server.server)
     await game.start()
