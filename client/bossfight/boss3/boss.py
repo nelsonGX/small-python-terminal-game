@@ -7,4 +7,6 @@ async def clear_screen():
 
 async def fight():
     boss = await get_gui("boss3")
-    print(boss)
+    you_won = await get_gui("won")
+    print(you_won)
+    exit(0)
