@@ -1,6 +1,8 @@
 import pygame
 import random
 import os
+
+from client.minigame.games.game01 import pause
 from server import Server
 
 class Game05:
@@ -19,10 +21,6 @@ class Game05:
         YELLOW = (255, 255, 0)
         BACKGROUNDGREY = (238, 238, 238)
         BACKGROUNDWHITE = (246, 246, 246)
-
-        class Game05:
-            def __init__(self, session: Server):
-                self.session = session
 
         # 遊戲初始化
         pygame.init()
@@ -315,3 +313,4 @@ class Game05:
             pygame.display.update()  # 畫面更新(有這行畫面才會變顏色)
 
         pygame.quit()
+        await pause()
