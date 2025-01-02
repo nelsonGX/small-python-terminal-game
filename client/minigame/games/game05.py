@@ -292,6 +292,7 @@ class Game05:
                 player.health -= hit.radius  # hit是撞到的石頭
                 if player.health <= 0:
                     show_init = True  # 當生命值為0，就再把初始畫面顯示出來
+                    running = False
 
             # 判斷寶物跟飛船相撞
             hits = pygame.sprite.spritecollide(player, powers, True)
