@@ -135,7 +135,11 @@ async def main_game_loop():
                     if new_pos_char == element["key"]:
                         await animations.transition()
                         element_found = True
-                        game_actions = {
+                        if (element["action"] == "shop"):
+                            await shop()
+                            break
+                        else:
+                            game_actions = {
                             "game01": gameloader.play01,
                             "game02": gameloader.play02,
                             "game03": gameloader.play03,
@@ -147,11 +151,10 @@ async def main_game_loop():
                             "game09": gameloader.play09,
                             "game10": gameloader.play10,
                             "game11": gameloader.play11,
-                            "shop": shop
                         }
-                        await game_actions[element["action"]](element["content"])
-                        await set_stats(element["game"])
-                        break
+                            await game_actions[element["action"]](element["content"])
+                            await set_stats(element["game"])
+                            break
                 
                 # boss
                 if (await get_stats(1) and await get_stats(2) and await get_stats(3) and await get_stats(4) and not await get_boss_stats(1)):
