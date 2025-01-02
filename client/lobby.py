@@ -140,7 +140,7 @@ async def main_game_loop():
                             "game02": gameloader.play02,
                             "game03": gameloader.play03,
                             "game04": gameloader.play04,
-                            # "game05": gameloader.play05,
+                            "game05": gameloader.play05,
                             "game06": gameloader.play06,
                             "game07": gameloader.play07,
                             "game08": gameloader.play08,
