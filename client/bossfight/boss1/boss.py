@@ -8,6 +8,9 @@ from server import Server
 class get_server_data:
     def __init__(self, session: Server):
         self.session: Server = session
+        
+    async def init_server(self):
+        await self.session.player.calc_stats()
 
     async def get_gold(self):
         return await self.session.shop.get_owned_currencies()
@@ -17,6 +20,10 @@ class get_server_data:
         return await self.session.player.get_hero_id()
     async def get_level(self):
         return await self.session.player.get_level()
+    async def get_player_attack(self):
+        return await self.session.player.get_hero_attack()
+    async def get_player_defense(self): 
+        return await self.session.player.get_hero_defense()
     
     async def get_boss_data(self):
         # boss_id = await self.session.room
@@ -40,6 +47,8 @@ async def get_all_player_data():
     gold = await get_data.get_gold()
     hp = await get_data.get_hp()
     level = await get_data.get_level()
+    atk = await get_data.get_player_attack()
+    defense = await get_data.get_player_defense()
     # hero_id = 1
     # gold = 100
     # hp = 100
@@ -55,7 +64,8 @@ async def fight():
     await clear_screen()
 
     # get data
-    boss_id, boss_name, boss_hp, boss_atk, boss_def = await get_server_data.get_boss_data(Server.server)
+    await get_server_data.init_server(Server.server)
+    boss_id, boss_name, boss_hp, boss_atk, boss_def, atk, defense = await get_server_data.get_boss_data(Server.server)
     hero_id, gold, hp, level = await get_all_player_data()
 
     boss = await get_gui("boss1")
@@ -92,7 +102,7 @@ async def fight():
 
         await clear_screen()
         if player_roll > boss_roll:
-            boss_hp -= 15
+            boss_hp -= atk
 
             print(boss)
             await asyncio.sleep(0.5)
@@ -108,7 +118,7 @@ async def fight():
             print(f"HP: {hp}")
             print()
             print("Player wins!")
-            print("You dealt 15 damage to the boss!")
+            print(f"You dealt {atk} damage to the boss!")
 
         elif player_roll < boss_roll:
             hp -= boss_atk
