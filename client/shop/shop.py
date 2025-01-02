@@ -30,7 +30,6 @@ async def get_shop_data():
 
 async def get_menu_options():
     data = await get_shop_data()
-    print(data)
 
     # Transform the data
     menu_options = [
