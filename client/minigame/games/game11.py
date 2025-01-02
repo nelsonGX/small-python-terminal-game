@@ -5,11 +5,11 @@ from server import Server
 
 
 class Game11:
-    def __init__(self):
-        # self.session = session
+    def __init__(self, session: Server):
+        self.session = session
         print()
 
-    def start(self):
+    async def start(self):
         random_int = random.randint(1, 100)
         print("歡迎來到終極密碼小遊戲！")
         print("請猜數字於1至100之間")
@@ -17,7 +17,7 @@ class Game11:
             input_int = int(input("> "))
             if input_int == random_int:
                 print("恭喜你猜對了！")
-                pause()
+                await pause()
                 break
             else:
                 if input_int < random_int:

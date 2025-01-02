@@ -3,7 +3,7 @@ import random as rd
 from server import Server
 
 
-def pause():
+async def pause():
     """暫停等待用戶輸入繼續"""
     input("按下 Enter 繼續...")
 
@@ -37,11 +37,10 @@ class Game01:
                     await self.play_slot_machine()
             elif choice == "4":
                 print("你離開了賭場。")
-                pause()
+                await pause()
                 break
             else:
                 print("無效的選擇，請重新選擇！")
-                pause()
 
     async def check_coins(self, cost):
         """檢查金幣是否足夠"""
@@ -68,7 +67,7 @@ class Game01:
             await self.session.shop.set_owned_currencies(new)
         else:
             print("你輸了！")
-        pause()
+        await pause()
 
     async def play_blackjack(self):
         """21點遊戲"""
@@ -108,7 +107,7 @@ class Game01:
             await self.session.shop.set_owned_currencies(new)
         else:
             print("你輸了！")
-        pause()
+        await pause()
 
     async def play_slot_machine(self):
         """拉霸機遊戲"""
@@ -139,4 +138,4 @@ class Game01:
             await self.session.shop.set_owned_currencies(new)
         else:
             print("很遺憾，未中獎！")
-        pause()
+        await pause()

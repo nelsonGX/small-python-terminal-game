@@ -151,11 +151,8 @@ class Game03:
       time.sleep(1)
       if Player > Computer:
         print('會贏喔!!')
-        pause()
       if Player < Computer:
         print('不是哥們!你輸了🖥️ 🦐')
-        pause()
       if Player == Computer:
         print('平手!')
-        pause()
-
+      await pause()

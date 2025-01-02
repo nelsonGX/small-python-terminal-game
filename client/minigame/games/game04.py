@@ -1,5 +1,6 @@
 import random
 
+from client.minigame.games.game01 import pause
 from server import Server
 
 
@@ -192,3 +193,4 @@ class Game04:
             if play_again != 'y':
                 print("感謝遊玩，再見！")
                 break
+        await pause()
