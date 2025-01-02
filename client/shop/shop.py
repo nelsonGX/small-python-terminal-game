@@ -13,6 +13,9 @@ class get_server_data:
     async def set_gold(self, gold):
         await self.session.shop.set_owned_currencies(gold)
 
+    async def get_server_shop_data(self):
+        return await self.session.shop.get_available_items()
+
 async def get_gold():
     get_data = get_server_data(Server.server)
     return await get_data.get_player_gold()
@@ -21,20 +24,40 @@ async def set_gold(gold):
     set_data = get_server_data(Server.server)
     await set_data.set_gold(gold=gold)
 
-menu_options = [
-    {"name": "1. item_1 20$", "action": "buy", "price": 20},
-    {"name": "2. item_2 100$", "action": "buy", "price": 100},
-    # add more items here or import
-    {"name": "3. Exit", "action": "exit"}
-]
+async def get_shop_data():
+    get_data = get_server_data(Server.server)
+    return await get_data.get_server_shop_data()
+
+async def get_menu_options():
+    data = await get_shop_data()
+
+    # Transform the data
+    menu_options = [
+        {
+            "name": f"{i+1}. {item.ItemName} {item.ItemCost}$",
+            "action": "buy",
+            "price": item.ItemCost
+        }
+        for i, item in enumerate(data)
+    ]
+
+    # Add the exit option at the end
+    menu_options.append({
+        "name": f"{len(data)+1}. 離開商店",
+        "action": "exit"
+    })
+
+    return menu_options
 
 async def check_action(index):
+    menu_options = await get_menu_options()
     if not index.isdigit():
         return False
     index = int(index)
     return False if index > len(menu_options) else True
 
 async def action(index, title):
+    menu_options = await get_menu_options()
     index = int(index)
     index -= 1
     action = menu_options[index]["action"]
@@ -61,6 +84,7 @@ async def action(index, title):
     return False
 
 async def shop():
+    menu_options = await get_menu_options()
     while True:
         checker = False
         index = 0
