@@ -55,3 +55,11 @@ class PlayerManager:
         self.DEF = hero_data.BaseDef * (await self.get_level() ** curve_data.Def)
         # Return success
         return Retcode.SUCCESS
+
+    # Get player attack
+    async def get_hero_attack(self):
+        return self.ATK
+
+    # Get player attack
+    async def get_hero_defense(self):
+        return self.DEF
