@@ -1,21 +1,21 @@
 [
   {
     "ID": 200001,
-    "Name": "測試BOSS",
+    "Name": "BOSS 01",
     "HP": 1000,
     "ATK": 12,
     "DEF": 20
   },
   {
     "ID": 200002,
-    "Name": "測試BOSS",
+    "Name": "BOSS 02",
     "HP": 1000,
     "ATK": 12,
     "DEF": 20
   },
   {
     "ID": 200003,
-    "Name": "測試BOSS",
+    "Name": "BOSS 03",
     "HP": 1000,
     "ATK": 12,
     "DEF": 20

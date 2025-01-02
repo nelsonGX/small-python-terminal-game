@@ -70,6 +70,7 @@ class ShopData:
     ItemType: int
     ItemID: int
     ItemCost: int
+    Name: str
 
 @dataclass
 class UpgradeCurveData:

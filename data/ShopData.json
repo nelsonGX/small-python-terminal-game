@@ -2,11 +2,19 @@
   {
     "ItemType": 1,
     "ItemID": 2001,
-    "ItemCost": 200
+    "ItemCost": 200,
+    "ItemName": "攻擊力加成"
   },
   {
     "ItemType": 1,
     "ItemID": 2002,
-    "ItemCost": 250
+    "ItemCost": 250,
+    "ItemName": "防禦力加成"
+  },
+  {
+    "ItemType": 1,
+    "ItemID": 2003,
+    "ItemCost": 250,
+    "ItemName": "血量加成"
   }
 ]
