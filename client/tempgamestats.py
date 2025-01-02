@@ -70,7 +70,7 @@ async def get_stats(game):
     elif game == 4:
         return temp_stats_g4
     elif game == 5:
-        return temp_stats_g5
+        return True
     elif game == 6:
         return temp_stats_g6
     elif game == 7:
