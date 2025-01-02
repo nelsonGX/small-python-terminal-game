@@ -9,6 +9,8 @@ from client.renderer import AsyncMapRenderer
 import client.minigame.gameloader as gameloader
 import client.animations as animations
 from client.shop.shop import shop
+from client.tempgamestats import get_stats, set_stats, set_boss_stats, get_boss_stats
+from client.bossfight.bossloader import fight_boss
 
 class get_server_data:
     def __init__(self, session: Server):
@@ -148,8 +150,20 @@ async def main_game_loop():
                             "shop": shop
                         }
                         await game_actions[element["action"]](element["content"])
+                        await set_stats(element["game"])
                         break
                 
+                # boss
+                if (await get_stats(1) and await get_stats(2) and await get_stats(3) and await get_stats(4) and not await get_boss_stats(1)):
+                    await fight_boss(1)
+                    await set_boss_stats(1)
+                if (await get_stats(5) and await get_stats(6) and await get_stats(7) and await get_stats(8) and not await get_boss_stats(2)):
+                    await fight_boss(2)
+                    await set_boss_stats(2)
+                if (await get_stats(9) and await get_stats(10) and await get_stats(11) and not await get_boss_stats(3)):
+                    await fight_boss(3)
+                    await set_boss_stats(3)
+
                 # Only update position if not hitting a border or special element
                 if (not element_found and 
                     new_pos_char not in game_properties["border_elements"]):

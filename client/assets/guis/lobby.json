@@ -6,62 +6,74 @@
     {
         "key": "A",
         "action": "game01",
-        "content": "game01"
+        "content": "game01",
+        "game": 1
     },
     {
         "key": "B",
         "action": "game02",
-        "content": "game02"
+        "content": "game02",
+        "game": 2
     },
     {
         "key": "C",
         "action": "game03",
-        "content": "game03"
+        "content": "game03",
+        "game": 3
     },
     {
         "key": "D",
         "action": "game04",
-        "content": "game04"
+        "content": "game04",
+        "game": 4
     },
     {
         "key": "E",
         "action": "game05",
-        "content": "game05"
+        "content": "game05",
+        "game": 5
     },
     {
         "key": "F",
         "action": "game06",
-        "content": "game06"
+        "content": "game06",
+        "game": 6
     },
     {
         "key": "G",
         "action": "game07",
-        "content": "game07"
+        "content": "game07",
+        "game": 7
     },
     {
         "key": "H",
         "action": "game08",
-        "content": "game08"
+        "content": "game08",
+        "game": 8
     },
     {
         "key": "I",
         "action": "game09",
-        "content": "game09"
+        "content": "game09",
+        "game": 9
     },
     {
         "key": "J",
         "action": "game10",
-        "content": "game10"
+        "content": "game10",
+        "game": 10
     },
     {
         "key": "K",
         "action": "game11",
-        "content": "game11"
+        "content": "game11",
+        "game": 11
     },
     {
         "key": "$",
         "action": "shop",
-        "content": "shop"
+        "content": "shop",
+        "game": 0
     }
 ] 
 }
