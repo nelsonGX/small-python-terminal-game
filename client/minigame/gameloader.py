@@ -38,6 +38,7 @@ async def play04(game_name):
 async def play05(game_name):
     await clear_screen()
     game = Game05(Server.server)
+    await game.start()
 
 async def play06(game_name):
     await clear_screen()
