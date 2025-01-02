@@ -38,7 +38,7 @@ async def action(index, title):
 
     elif action == "test":
         from client.bossfight.bossloader import fight_boss
-        await fight_boss(1)
+        await fight_boss(2)
 
     elif action == "exit":
         print(title)
