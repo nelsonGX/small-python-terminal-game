@@ -2,3 +2,4 @@ betterproto~=1.2.5
 cryptography~=44.0.0
 aiofiles~=24.1.0
 click~=8.1.8
+pygame~=2.6.1
